@@ -1,0 +1,41 @@
+INDEPENDENT CONTRACTOR AGREEMENT
+
+This Agreement is entered into between Acme Consulting Pte Ltd ("Client") and
+Jordan Lee, Freelance Web Developer ("Contractor"), signed and dated August 15, 2026.
+
+1. Scope of Work
+The Contractor agrees to design and develop a marketing website for the Client,
+including up to 5 pages, responsive design, and a contact form integration.
+
+2. Payment Terms
+The Client agrees to pay the Contractor a total fee of $3,000 SGD. Payment is due
+no later than September 10, 2026. Payment shall be made via bank transfer to the
+account provided by the Contractor.
+
+3. Deliverables
+The Contractor shall deliver the completed website no later than September 5, 2026.
+
+4. Intellectual Property
+All work product shall become the exclusive property of the Client only upon receipt
+of full payment. Prior to full payment, all rights remain with the Contractor.
+
+5. Termination
+Either party may terminate this Agreement with 14 days written notice. If the Client
+terminates without cause, all work completed to date shall be paid in full within
+7 days of termination.
+
+6. Liability
+The Contractor's total liability under this Agreement shall not exceed the total
+fees paid, except in cases of gross negligence or willful misconduct.
+
+7. Non-Compete
+The Contractor agrees not to provide similar web development services to any direct
+competitor of the Client for a period of 24 months following the completion of this
+Agreement, within the same industry and geographic region.
+
+8. Renewal
+This Agreement may be renewed for additional projects. If the Client wishes to engage
+the Contractor for a follow-up project, the Client must provide written notice at
+least 30 days before the one-year anniversary of this Agreement (i.e. by no later
+than July 16, 2027), or the preferential rate outlined in this Agreement will no
+longer apply.
