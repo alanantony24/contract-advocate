@@ -8,6 +8,9 @@ from common import dynamo
 
 
 def lambda_handler(event, context):
+    if event.get("httpMethod") == "OPTIONS":
+        return _response(200, {"ok": True})
+
     params = event.get("pathParameters") or {}
     case_id = params.get("case_id")
     if not case_id:
@@ -27,6 +30,11 @@ def lambda_handler(event, context):
 def _response(status_code, body_dict):
     return {
         "statusCode": status_code,
-        "headers": {"Content-Type": "application/json"},
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token",
+            "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+        },
         "body": json.dumps(body_dict, default=str),
     }

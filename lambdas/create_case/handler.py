@@ -10,6 +10,9 @@ from common import pdf_utils, bedrock_client, dynamo
 
 def lambda_handler(event, context):
     """Expects a JSON body: {"user_id": "...", "pdf_base64": "..."}"""
+    if event.get("httpMethod") == "OPTIONS":
+        return _response(200, {"ok": True})
+
     try:
         body = json.loads(event.get("body", "{}"))
         user_id = body.get("user_id", "demo-user")
@@ -44,6 +47,11 @@ def lambda_handler(event, context):
 def _response(status_code, body_dict):
     return {
         "statusCode": status_code,
-        "headers": {"Content-Type": "application/json"},
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token",
+            "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+        },
         "body": json.dumps(body_dict, default=str),
     }

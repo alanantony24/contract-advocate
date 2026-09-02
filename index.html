@@ -1,0 +1,1105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SimplifyNext</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --o: #f55414;
+        --ink: #172139;
+        --muted: #77839a;
+        --bg: #f8fafc;
+        --line: #e8edf3;
+        --peach: #fff0e9;
+        --blue: #f3f7fc;
+        --lav: #f4f1fb;
+        --green: #eaf5ef;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          14px "DM Sans",
+          sans-serif;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 230px 1fr;
+        min-height: 100vh;
+      }
+      .side {
+        background: #fff;
+        border-right: 1px solid var(--line);
+        padding: 28px 15px;
+        display: flex;
+        flex-direction: column;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+      }
+      .brand {
+        padding: 0 10px;
+        font-weight: 700;
+        font-size: 17px;
+      }
+      .brand i {
+        display: inline-grid;
+        place-items: center;
+        background: var(--o);
+        height: 24px;
+        width: 24px;
+        border-radius: 6px;
+        color: white;
+        font-style: normal;
+        margin-right: 8px;
+      }
+      .nav {
+        display: grid;
+        gap: 3px;
+        margin-top: 42px;
+      }
+      .nav button {
+        border: 0;
+        background: none;
+        color: var(--muted);
+        border-radius: 7px;
+        padding: 10px;
+        text-align: left;
+        font: 13px "DM Sans";
+        cursor: pointer;
+      }
+      .nav button.active {
+        background: var(--peach);
+        color: var(--o);
+        font-weight: 600;
+      }
+      .foot {
+        margin-top: auto;
+        border-top: 1px solid var(--line);
+        padding: 17px 10px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .main {
+        max-width: 1210px;
+        width: 100%;
+        padding: 27px 48px 65px;
+        margin: auto;
+      }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .date {
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .primary,
+      .secondary {
+        border-radius: 6px;
+        padding: 10px 13px;
+        font: 600 12px "DM Sans";
+        cursor: pointer;
+      }
+      .primary {
+        border: 0;
+        background: var(--o);
+        color: white;
+        box-shadow: 0 5px 11px #f5541424;
+      }
+      .secondary {
+        border: 1px solid var(--line);
+        background: #fff;
+        color: var(--ink);
+      }
+      .view {
+        display: none;
+      }
+      .view.active {
+        display: block;
+      }
+      .heading,
+      .pagehead {
+        margin: 44px 0 23px;
+      }
+      .heading h1,
+      .pagehead h1 {
+        font-size: 30px;
+        letter-spacing: -0.05em;
+        margin: 0;
+      }
+      .heading p,
+      .pagehead p {
+        font-size: 13px;
+        color: var(--muted);
+        margin: 8px 0 0;
+      }
+      .pagehead {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+      }
+      .hero {
+        background: var(--o);
+        color: #fff;
+        border-radius: 12px;
+        min-height: 166px;
+        padding: 26px 29px;
+        display: grid;
+        grid-template-columns: 1fr 220px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero:after {
+        content: "";
+        position: absolute;
+        width: 230px;
+        height: 230px;
+        border: 2px solid #ff916d;
+        border-radius: 50%;
+        right: -106px;
+        bottom: -177px;
+      }
+      .hero h2 {
+        font-size: 23px;
+        line-height: 1.1;
+        margin: 0 0 8px;
+      }
+      .hero p {
+        font-size: 12px;
+        line-height: 1.5;
+        color: #ffe6dd;
+        margin: 0;
+        max-width: 350px;
+      }
+      .stat {
+        align-self: end;
+        z-index: 1;
+      }
+      .stat strong {
+        display: block;
+        font-size: 45px;
+        line-height: 1;
+      }
+      .stat span {
+        font-size: 11px;
+        color: #ffe5db;
+      }
+      .drop {
+        margin-top: 18px;
+        border: 1px dashed #fac7b5;
+        background: var(--peach);
+        border-radius: 10px;
+        min-height: 206px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      .drop.over {
+        background: #ffe9df;
+      }
+      .doc {
+        width: 48px;
+        height: 54px;
+        background: white;
+        border-radius: 8px;
+        color: var(--o);
+        display: grid;
+        place-items: center;
+        font-size: 25px;
+        margin-bottom: 12px;
+        box-shadow: 0 5px 12px #b35c3720;
+      }
+      .drop h3 {
+        font-size: 14px;
+        margin: 0 0 4px;
+      }
+      .drop p {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 0;
+      }
+      .drop button {
+        margin-top: 14px;
+      }
+      .drop small {
+        font-size: 10px;
+        color: #a5aebb;
+        margin-top: 9px;
+      }
+      .section {
+        margin-top: 40px;
+      }
+      .sectiontop {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+      .section h2,
+      .panel h2 {
+        font-size: 16px;
+        margin: 0;
+      }
+      .link {
+        color: var(--o);
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 13px;
+      }
+      .card,
+      .panel {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        padding: 18px;
+      }
+      .card {
+        min-height: 124px;
+      }
+      .card.due {
+        border-color: #fee1d5;
+        background: #fffaf8;
+      }
+      .label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.075em;
+        color: var(--muted);
+      }
+      .num {
+        font-size: 39px;
+        font-weight: 700;
+        line-height: 1;
+        margin: 12px 0 7px;
+      }
+      .due .num {
+        color: var(--o);
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .list {
+        margin-top: 13px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        overflow: hidden;
+      }
+      .invoice {
+        display: grid;
+        grid-template-columns: 34px 1fr 90px 105px 20px;
+        gap: 12px;
+        align-items: center;
+        padding: 13px 15px;
+        border-bottom: 1px solid var(--line);
+      }
+      .invoice:last-child {
+        border: 0;
+      }
+      .letter {
+        width: 31px;
+        height: 31px;
+        border-radius: 7px;
+        background: #e7f0fa;
+        color: #477494;
+        display: grid;
+        place-items: center;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .invoice:nth-child(2) .letter {
+        background: #fde7dd;
+        color: #d85e2c;
+      }
+      .invoice:nth-child(3) .letter {
+        background: #eeeafa;
+        color: #7e6eab;
+      }
+      .client {
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .client span {
+        display: block;
+        font-size: 10px;
+        color: var(--muted);
+        font-weight: 400;
+        margin-top: 3px;
+      }
+      .amount,
+      .status {
+        text-align: right;
+        font-size: 11px;
+      }
+      .status {
+        color: var(--muted);
+      }
+      .overdue {
+        color: var(--o);
+      }
+      .more {
+        border: 0;
+        background: none;
+        color: var(--muted);
+        cursor: pointer;
+      }
+      .split {
+        display: grid;
+        grid-template-columns: minmax(0, 1.55fr) minmax(275px, 0.85fr);
+        gap: 18px;
+      }
+      .panel h2 {
+        margin-bottom: 17px;
+      }
+      .contract,
+      .remind,
+      .email {
+        display: grid;
+        grid-template-columns: 39px 1fr auto;
+        gap: 12px;
+        align-items: center;
+        border-top: 1px solid var(--line);
+        padding: 14px 0;
+      }
+      .contract:first-of-type,
+      .remind:first-of-type,
+      .email:first-of-type {
+        border: 0;
+        padding-top: 0;
+      }
+      .mini {
+        height: 36px;
+        width: 31px;
+        border-radius: 6px;
+        background: var(--peach);
+        color: var(--o);
+        display: grid;
+        place-items: center;
+      }
+      .name {
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .name span {
+        font-size: 10px;
+        color: var(--muted);
+        font-weight: 400;
+        display: block;
+        margin-top: 3px;
+      }
+      .chip {
+        font-size: 9px;
+        padding: 4px 7px;
+        border-radius: 12px;
+        background: var(--green);
+        color: #4b8064;
+      }
+      .terms {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+      }
+      .term {
+        background: var(--blue);
+        padding: 11px;
+        border-radius: 7px;
+      }
+      .term label {
+        display: block;
+        font-size: 9px;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 5px;
+      }
+      .term strong {
+        font-size: 11px;
+      }
+      .note,
+      .agent {
+        margin-top: 14px;
+        background: var(--lav);
+        border-radius: 8px;
+        padding: 14px;
+        font-size: 11px;
+        line-height: 1.55;
+        color: #5f6680;
+      }
+      .agent {
+        margin: 0;
+        padding: 20px;
+      }
+      .agent h2 {
+        font-size: 18px;
+        margin: 5px 0 7px;
+      }
+      .agent p {
+        font-size: 12px;
+        line-height: 1.5;
+        color: #68627b;
+      }
+      .agent .secondary {
+        margin-top: 10px;
+      }
+      .draft textarea,
+      .draft input {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 9px;
+        font: 12px "DM Sans";
+        margin: 5px 0 13px;
+      }
+      .draft textarea {
+        height: 175px;
+        line-height: 1.55;
+      }
+      .draft label {
+        font-size: 10px;
+        color: var(--muted);
+      }
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: #17213955;
+        z-index: 5;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .modal.open {
+        display: flex;
+      }
+      .modalbox {
+        background: #fff;
+        border-radius: 11px;
+        padding: 24px;
+        max-width: 420px;
+        width: 100%;
+      }
+      .modalbox h2 {
+        margin: 0 0 7px;
+      }
+      .modalbox p {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .modalbox input {
+        width: 100%;
+        padding: 9px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        margin: 8px 0 13px;
+      }
+      .toast {
+        display: none;
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        background: var(--ink);
+        color: #fff;
+        border-radius: 7px;
+        padding: 11px 14px;
+        font-size: 12px;
+        z-index: 8;
+      }
+      .toast.show {
+        display: block;
+      }
+      input[type="file"] {
+        display: none;
+      }
+      @media (max-width: 800px) {
+        .layout {
+          display: block;
+        }
+        .side {
+          display: none;
+        }
+        .main {
+          padding: 21px 18px 54px;
+        }
+        .heading,
+        .pagehead {
+          margin: 37px 0 21px;
+        }
+        .heading h1,
+        .pagehead h1 {
+          font-size: 27px;
+        }
+        .hero {
+          grid-template-columns: 1fr;
+          min-height: 205px;
+          padding: 24px;
+        }
+        .stat {
+          margin-top: 8px;
+        }
+        .cards {
+          grid-template-columns: 1fr 1fr;
+        }
+        .cards .card:first-child {
+          grid-column: span 2;
+        }
+        .invoice {
+          grid-template-columns: 33px 1fr auto;
+          gap: 9px;
+        }
+        .invoice .amount,
+        .more {
+          display: none;
+        }
+        .split {
+          grid-template-columns: 1fr;
+        }
+        .date {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="side">
+        <div class="brand"><i>▱</i>simplifynext</div>
+        <nav class="nav">
+          <button class="active" data-view="home">⌂&nbsp; Home</button
+          ><button data-view="contracts">▱&nbsp; Contracts</button
+          ><button data-view="invoices">▣&nbsp; Invoices</button
+          ><button data-view="reminders">♧&nbsp; Reminders</button
+          ><button data-view="assistant">✦&nbsp; Follow-up assistant</button
+          ><button data-view="emails">
+            ✉&nbsp; Client emails <small>KIV</small>
+          </button>
+        </nav>
+        <div class="foot">Contract Advocate</div>
+      </aside>
+      <main class="main">
+        <header class="top">
+          <span class="date">LIVE DATA</span
+          ><button class="primary" id="topUpload">+ Upload contract</button>
+        </header>
+        <section class="view active" id="home">
+          <div class="heading">
+            <h1>Contract overview</h1>
+            <p>Upload a contract to generate the first AWS-backed case.</p>
+          </div>
+          <div class="hero">
+            <div>
+              <h2>No cases yet</h2>
+              <p>Once a contract is processed, active obligations and reminders will appear here.</p>
+            </div>
+            <div class="stat">
+              <strong id="dueNum">0</strong
+              ><span id="dueTotal">invoices due now · $0 total</span>
+            </div>
+          </div>
+          <div class="drop" id="drop">
+            <div class="doc">▱</div>
+            <h3>Upload a contract</h3>
+            <p>We’ll extract obligations and create a case from AWS.</p>
+            <button class="primary choose">Choose file</button
+            ><small>PDF only · text-based PDFs only</small>
+          </div>
+          <div class="section">
+            <div class="sectiontop">
+              <h2>Payment overview</h2>
+              <a class="link" data-view="invoices">View all invoices</a>
+            </div>
+            <div class="cards">
+              <div class="card due">
+                <div class="label">Due now</div>
+                <div class="num" id="cardDue">0</div>
+                <p id="cardText">$0 across 0 invoices</p>
+              </div>
+              <div class="card">
+                <div class="label">Due this week</div>
+                <div class="num">0</div>
+                <p>$0 expected</p>
+              </div>
+              <div class="card">
+                <div class="label">Later this month</div>
+                <div class="num">0</div>
+                <p>$0 expected</p>
+              </div>
+            </div>
+            <div class="list" id="homeList"></div>
+          </div>
+        </section>
+        <section class="view" id="contracts">
+          <div class="pagehead">
+            <div>
+              <h1>Contracts</h1>
+              <p>Uploaded contract records will appear here once AWS processes them.</p>
+            </div>
+            <button class="primary choose">+ Upload contract</button>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <h2>Your documents</h2>
+              <div id="contractList"></div>
+            </div>
+            <aside class="panel">
+              <h2>Latest review</h2>
+              <div class="terms">
+                <div class="term">
+                  <label>Next payment</label><strong>Waiting for AWS data</strong>
+                </div>
+                <div class="term">
+                  <label>Late payment</label><strong>Waiting for AWS data</strong>
+                </div>
+                <div class="term">
+                  <label>Cancellation</label><strong>Waiting for AWS data</strong>
+                </div>
+                <div class="term">
+                  <label>Milestones</label><strong>Waiting for AWS data</strong>
+                </div>
+              </div>
+              <div class="note">
+                <b>SUMMARY</b><br />Contract insights will populate after the AWS extraction step completes.
+              </div>
+            </aside>
+          </div>
+        </section>
+        <section class="view" id="invoices">
+          <div class="pagehead">
+            <div>
+              <h1>Invoices</h1>
+              <p>Invoice status updates will appear here after AWS processes a case.</p>
+            </div>
+            <button class="primary" id="newInvoice">+ Add invoice</button>
+          </div>
+          <div class="cards">
+            <div class="card due">
+              <div class="label">Overdue</div>
+              <div class="num" id="overdueN">0</div>
+              <p>No overdue invoices</p>
+            </div>
+            <div class="card">
+              <div class="label">Due soon</div>
+              <div class="num" id="soonN">0</div>
+              <p>No due-soon invoices</p>
+            </div>
+            <div class="card">
+              <div class="label">Paid this month</div>
+              <div class="num" id="paidN">0</div>
+              <p>$0 received</p>
+            </div>
+          </div>
+          <div class="list" id="invoiceList"></div>
+        </section>
+        <section class="view" id="reminders">
+          <div class="pagehead">
+            <div>
+              <h1>Reminders</h1>
+              <p>Small prompts so no payment gets forgotten.</p>
+            </div>
+            <button class="secondary" id="completeAll">Mark all done</button>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <h2>To do</h2>
+              <div id="reminderList"></div>
+            </div>
+            <aside class="agent">
+              <div class="label">AUTOMATIC REMINDERS</div>
+              <h2>We’ll keep an eye on this.</h2>
+              <p>
+                SimplifyNext reminds you before a deadline, on the due date, and
+                when a payment becomes overdue.
+              </p>
+              <button class="secondary" id="pause">Pause reminders</button>
+            </aside>
+          </div>
+        </section>
+        <section class="view" id="assistant">
+          <div class="pagehead">
+            <div>
+              <h1>Follow-up assistant</h1>
+              <p>Follow-up drafts will be generated from AWS case data.</p>
+            </div>
+          </div>
+          <div class="split">
+            <div class="panel draft">
+              <div class="label">AWAITING AWS DRAFT</div>
+              <label>To</label><input placeholder="recipient@example.com" /><label
+                >Subject</label
+              ><input placeholder="Follow-up subject" /><label
+                >Message</label
+              ><textarea id="message" placeholder="The AWS-generated message will appear here once a case has been processed."></textarea>
+              <div class="actions">
+                <button class="secondary" id="rewrite">Rewrite gently</button
+                ><button class="primary" id="copy">Copy message</button>
+              </div>
+            </div>
+            <aside class="agent">
+              <div class="label">AI PAYMENT AGENT</div>
+              <h2>Waiting for live case data</h2>
+              <p>
+                Once the contract is uploaded and processed by AWS, the obligation summary and follow-up message will be generated here.
+              </p>
+              <button class="secondary" data-view="invoices">
+                See payment tracker
+              </button>
+            </aside>
+          </div>
+        </section>
+        <section class="view" id="emails">
+          <div class="pagehead">
+            <div>
+              <h1>Client emails <small class="label">KIV</small></h1>
+              <p>
+                Review payment signals and prepare a response before replying.
+              </p>
+            </div>
+          </div>
+          <div class="split">
+            <div class="panel">
+              <h2>Recent client messages</h2>
+              <div class="email" data-email="orbit">
+                <div class="mini">✉</div>
+                <div class="name">
+                  Client message<span>Waiting for AWS data.</span>
+                </div>
+                <span class="chip">AWAITING DATA</span>
+              </div>
+            </div>
+            </div>
+            <aside class="panel">
+              <h2>Email analysis</h2>
+              <div class="note" id="analysis">
+                <b>SELECT AN EMAIL</b><br />Choose a message to see payment
+                signals and a reply draft.
+              </div>
+              <button
+                class="primary"
+                id="openDraft"
+                style="display: none; margin-top: 13px"
+              >
+                Open response draft
+              </button>
+            </aside>
+          </div>
+        </section>
+        <input id="file" type="file" accept=".pdf,.doc,.docx" />
+      </main>
+    </div>
+    <div class="modal" id="modal">
+      <div class="modalbox">
+        <h2>Add an invoice</h2>
+        <p>Manual invoice entries are disabled until AWS data is available.</p>
+        <input id="clientInput" placeholder="Client name" />
+        <div class="actions">
+          <button class="secondary close">Cancel</button
+          ><button class="primary" id="save">Add invoice</button>
+        </div>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script>
+      const S = {
+        invoices: [],
+        contracts: [],
+        reminders: [],
+      };
+      const q = (s) => document.querySelector(s),
+        qa = (s) => document.querySelectorAll(s),
+        cash = (n) => "$" + n.toLocaleString();
+      function toast(t) {
+        q("#toast").textContent = t;
+        q("#toast").classList.add("show");
+        setTimeout(() => q("#toast").classList.remove("show"), 1800);
+      }
+      function view(v) {
+        qa(".view").forEach((e) => e.classList.toggle("active", e.id === v));
+        qa(".nav button").forEach((e) =>
+          e.classList.toggle("active", e.dataset.view === v),
+        );
+        scrollTo(0, 0);
+      }
+      qa("[data-view]").forEach(
+        (e) => (e.onclick = () => view(e.dataset.view)),
+      );
+      function row(i, act) {
+        return `<div class="invoice"><span class="letter">${i.letter}</span><div class="client">${i.client}<span>${i.detail}</span></div><div class="amount">${cash(i.amount)}</div><div class="status ${i.status === "overdue" ? "overdue" : ""}">${i.date}</div>${act ? `<button class="more" onclick="paid('${i.client}')">···</button>` : ""}</div>`;
+      }
+      function renderInv() {
+        if (!S.invoices.length) {
+          q("#homeList").innerHTML =
+            '<div class="empty-state">No AWS case data yet. Upload a contract to create a case.</div>';
+          q("#invoiceList").innerHTML =
+            '<div class="empty-state">No invoices loaded from AWS yet.</div>';
+          q("#dueNum").textContent = 0;
+          q("#dueTotal").textContent = "invoices due now · $0 total";
+          q("#cardDue").textContent = 0;
+          q("#cardText").textContent = "$0 across 0 invoices";
+          q("#overdueN").textContent = 0;
+          q("#soonN").textContent = 0;
+          q("#paidN").textContent = 0;
+          return;
+        }
+
+        q("#homeList").innerHTML = S.invoices
+          .filter((x) => x.status !== "paid")
+          .slice(0, 3)
+          .map((x) => row(x))
+          .join("");
+        q("#invoiceList").innerHTML = S.invoices.map((x) => row(x, 1)).join("");
+        let d = S.invoices.filter(
+            (x) => x.status === "overdue" || x.status === "due",
+          ),
+          sum = d.reduce((a, x) => a + x.amount, 0);
+        q("#dueNum").textContent = d.length;
+        q("#dueTotal").textContent = `invoices due now · ${cash(sum)} total`;
+        q("#cardDue").textContent = d.length;
+        q("#cardText").textContent = `${cash(sum)} across ${d.length} invoices`;
+        q("#overdueN").textContent = S.invoices.filter(
+          (x) => x.status === "overdue",
+        ).length;
+        q("#soonN").textContent = S.invoices.filter(
+          (x) => x.status === "due",
+        ).length;
+        q("#paidN").textContent = S.invoices.filter(
+          (x) => x.status === "paid",
+        ).length;
+      }
+      window.paid = (c) => {
+        let x = S.invoices.find((x) => x.client === c);
+        if (x.status === "paid") return toast("Invoice already paid");
+        x.status = "paid";
+        x.date = "Paid today";
+        renderInv();
+        toast(`${c} marked as paid`);
+      };
+      function renderContracts() {
+        if (!S.contracts.length) {
+          q("#contractList").innerHTML =
+            '<div class="empty-state">No contract records loaded from AWS yet.</div>';
+          return;
+        }
+        q("#contractList").innerHTML = S.contracts
+          .map(
+            (x) =>
+              `<div class="contract"><div class="mini">▱</div><div class="name">${x[0]}<span>${x[1]}</span></div><span class="chip">CHECKED</span></div>`,
+          )
+          .join("");
+      }
+      function renderRem() {
+        if (!S.reminders.length) {
+          q("#reminderList").innerHTML =
+            '<div class="empty-state">No reminders from AWS yet.</div>';
+          return;
+        }
+        q("#reminderList").innerHTML = S.reminders
+          .map(
+            (x, n) =>
+              `<div class="remind" style="${x[2] ? "opacity:.45" : ""}"><div class="mini">♧</div><div class="name">${x[0]}<span>${x[1]}</span></div><button class="secondary" onclick="finish(${n})">${x[2] ? "Done" : "Complete"}</button></div>`,
+          )
+          .join("");
+      }
+      window.finish = (n) => {
+        S.reminders[n][2] = true;
+        renderRem();
+        toast("Reminder completed");
+      };
+      const API = {
+        createCase:
+          "https://5koehiglgt5w3ypm2pzzyqgf2u0hzpqp.lambda-url.us-east-1.on.aws/",
+        getCase:
+          "https://jvbqn63ehf4wp7jpcz524z5xam0hkurr.lambda-url.us-east-1.on.aws/",
+        confirmCase:
+          "https://5buynebpw67af2h4hfmb6cgmgi0zhmdh.lambda-url.us-east-1.on.aws/",
+        timeline:
+          "https://bzdwe3bbv3h7oabiko26nidkcu0xkubz.lambda-url.us-east-1.on.aws/",
+        advanceTime:
+          "https://gmyttojs5copjarjx2xxvvgzom0cqdpi.lambda-url.us-east-1.on.aws/",
+      };
+      function caseUrl(baseUrl, caseId) {
+        if (!baseUrl) return "";
+        return baseUrl.includes("{case_id}")
+          ? baseUrl.replace("{case_id}", caseId)
+          : `${baseUrl.replace(/\/$/, "")}/${encodeURIComponent(caseId)}`;
+      }
+      async function apiRequest(url, options = {}) {
+        if (!url) {
+          toast(
+            "Add your Lambda Function URLs to the API config at the top of index.html",
+          );
+          return null;
+        }
+        const res = await fetch(url, {
+          headers: { "Content-Type": "application/json" },
+          ...options,
+        });
+        const text = await res.text();
+        let data = {};
+        try {
+          data = text ? JSON.parse(text) : {};
+        } catch (e) {
+          data = { raw: text };
+        }
+        if (typeof data.body === "string") {
+          try {
+            data = JSON.parse(data.body);
+          } catch (e) {}
+        }
+        if (!res.ok)
+          throw new Error(data.error || data.message || "Request failed");
+        return data;
+      }
+      async function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () =>
+            resolve(
+              typeof reader.result === "string"
+                ? reader.result.split(",")[1]
+                : "",
+            );
+          reader.onerror = () => reject(new Error("Could not read file"));
+          reader.readAsDataURL(file);
+        });
+      }
+      async function createCaseFromFile(file) {
+        const base64 = await fileToBase64(file);
+        return apiRequest(API.createCase, {
+          method: "POST",
+          body: JSON.stringify({ user_id: "aws-user", pdf_base64: base64 }),
+        });
+      }
+      async function loadCase(caseId) {
+        return apiRequest(caseUrl(API.getCase, caseId), { method: "GET" });
+      }
+      async function confirmCaseFor(caseId, obligations) {
+        return apiRequest(caseUrl(API.confirmCase, caseId), {
+          method: "POST",
+          body: JSON.stringify({ obligations: obligations || [] }),
+        });
+      }
+      async function loadTimeline(caseId) {
+        return apiRequest(caseUrl(API.timeline, caseId), { method: "GET" });
+      }
+      async function advanceCaseTime(caseId, days) {
+        return apiRequest(caseUrl(API.advanceTime, caseId), {
+          method: "POST",
+          body: JSON.stringify({ days: Number(days) || 1 }),
+        });
+      }
+      const f = q("#file");
+      qa(".choose").forEach((e) => (e.onclick = () => f.click()));
+      q("#topUpload").onclick = () => f.click();
+      async function upload(x) {
+        if (!x) return;
+        try {
+          toast("Uploading contract to Lambda...");
+          const result = await createCaseFromFile(x);
+          if (result && result.case_id) {
+            S.contracts.unshift([
+              result.case_id,
+              "Uploaded just now · case created",
+            ]);
+            renderContracts();
+            view("contracts");
+            toast("Case created: " + result.case_id);
+          } else {
+            toast("Contract uploaded successfully");
+          }
+        } catch (err) {
+          toast(err.message || "Upload failed");
+        }
+      }
+      f.onchange = () => upload(f.files[0]);
+      let z = q("#drop");
+      ["dragover", "dragenter"].forEach((e) =>
+        z.addEventListener(e, (x) => {
+          x.preventDefault();
+          z.classList.add("over");
+        }),
+      );
+      ["dragleave", "drop"].forEach((e) =>
+        z.addEventListener(e, (x) => {
+          x.preventDefault();
+          z.classList.remove("over");
+        }),
+      );
+      z.ondrop = (e) => upload(e.dataTransfer.files[0]);
+      q("#completeAll").onclick = () => {
+        S.reminders.forEach((x) => (x[2] = true));
+        renderRem();
+        toast("All reminders completed");
+      };
+      let paused = false;
+      q("#pause").onclick = (e) => {
+        paused = !paused;
+        e.target.textContent = paused ? "Resume reminders" : "Pause reminders";
+        toast(paused ? "Reminders paused" : "Reminders resumed");
+      };
+      q("#rewrite").onclick = () => {
+        q("#message").value =
+          "Hi Maya,\n\nI hope you’re having a good week. Just checking in on Invoice #044 for $1,200, which was due on 20 August.\n\nWhen you have a moment, could you share an expected payment date? I’m happy to resend anything you need.\n\nWarmly,\nAlex";
+        toast("Draft rewritten");
+      };
+      q("#copy").onclick = () => {
+        navigator.clipboard?.writeText(q("#message").value);
+        toast("Message copied");
+      };
+      qa(".email").forEach(
+        (e) =>
+          (e.onclick = () => {
+            let v = e.dataset.email === "vanta";
+            q("#analysis").innerHTML =
+              "<b>PAYMENT SIGNAL</b><br>Live AWS message analysis will appear here after the first contract is processed.";
+            q("#openDraft").style.display = v ? "block" : "none";
+          }),
+      );
+      q("#openDraft").onclick = () => view("assistant");
+      q("#newInvoice").onclick = () => q("#modal").classList.add("open");
+      q(".close").onclick = () => q("#modal").classList.remove("open");
+      q("#save").onclick = () => {
+        let c = q("#clientInput").value || "New client";
+        S.invoices.push({
+          client: c,
+          detail: "Draft invoice",
+          amount: 0,
+          status: "upcoming",
+          date: "Not scheduled",
+          letter: c[0].toUpperCase(),
+        });
+        q("#modal").classList.remove("open");
+        q("#clientInput").value = "";
+        renderInv();
+        toast("Draft invoice added");
+      };
+      renderInv();
+      renderContracts();
+      renderRem();
+    </script>
+  </body>
+</html>

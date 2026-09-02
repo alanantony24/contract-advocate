@@ -11,6 +11,9 @@ def lambda_handler(event, context):
     """DEMO/DEBUG ONLY. Not a real product feature - lets us show the
     escalation flow in a 5-minute video without waiting for real days to pass.
     Expects: {"days": 20}"""
+    if event.get("httpMethod") == "OPTIONS":
+        return _response(200, {"ok": True})
+
     params = event.get("pathParameters") or {}
     case_id = params.get("case_id")
     body = json.loads(event.get("body", "{}"))
@@ -29,6 +32,11 @@ def lambda_handler(event, context):
 def _response(status_code, body_dict):
     return {
         "statusCode": status_code,
-        "headers": {"Content-Type": "application/json"},
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token",
+            "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+        },
         "body": json.dumps(body_dict, default=str),
     }
