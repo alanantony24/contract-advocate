@@ -12,7 +12,7 @@ if (Test-Path $BuildDir) { Remove-Item -Recurse -Force $BuildDir }
 New-Item -ItemType Directory -Force -Path $BuildDir | Out-Null
 
 Write-Host "Installing dependencies..."
-pip install -r requirements.txt -t $BuildDir --quiet
+pip install -r requirements.txt -t $BuildDir --platform manylinux2014_x86_64 --implementation cp --python-version 3.12 --only-binary=:all: --quiet
 
 Write-Host "Copying shared code and handler..."
 Copy-Item -Recurse -Force "common" "$BuildDir/common"

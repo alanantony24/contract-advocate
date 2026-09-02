@@ -154,17 +154,28 @@ This creates:
 build/create_case.zip
 ```
 
-### Option B: Docker (works on macOS and Windows)
+### Option B: Docker (recommended on macOS and Windows)
 
-From the repo root:
+From the repo root, use the `linux/amd64` platform explicitly. This matters on
+Apple Silicon Macs: Lambda must receive Linux binaries, not macOS or ARM
+binaries.
+
+macOS / Linux:
 
 ```bash
-docker run --rm -it -v "$PWD":/app -w /app python:3.12 bash
+docker run --rm --platform linux/amd64 -v "$PWD":/app -w /app python:3.12 bash
+```
+
+Windows PowerShell:
+
+```powershell
+docker run --rm --platform linux/amd64 -v "${PWD}:/app" -w /app python:3.12 bash
 ```
 
 Then inside the container:
 
 ```bash
+rm -rf build/create_case build/create_case.zip
 pip install -r requirements.txt
 apt-get update && apt-get install -y zip
 chmod +x build_lambda.sh
@@ -181,6 +192,18 @@ Important:
 
 - do not upload the folder `build/create_case`
 - upload the zip file directly
+- use Docker or WSL when possible; the PowerShell builder also targets the
+  Lambda Linux x86_64 wheels explicitly
+
+Before uploading, verify the native dependency is a Linux ELF file:
+
+```bash
+unzip -p build/create_case.zip cryptography/hazmat/bindings/_rust.abi3.so > /tmp/_rust.abi3.so
+file /tmp/_rust.abi3.so
+```
+
+The output must contain `ELF`. If it says `Mach-O`, the ZIP was built on macOS
+outside Docker. If it says `PE32`, it was built on Windows.
 
 ## Deploying a Lambda in AWS
 

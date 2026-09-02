@@ -10,7 +10,10 @@ from common import pdf_utils, bedrock_client, dynamo
 
 def lambda_handler(event, context):
     """Expects a JSON body: {"user_id": "...", "pdf_base64": "..."}"""
-    if event.get("httpMethod") == "OPTIONS":
+    request_context = event.get("requestContext", {})
+    http_context = request_context.get("http", {})
+    http_method = event.get("httpMethod") or http_context.get("method")
+    if http_method == "OPTIONS":
         return _response(200, {"ok": True})
 
     try:
