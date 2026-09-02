@@ -38,77 +38,313 @@ contract-advocate/
 └── .env.example
 ```
 
-## Setup (do this once)
+## Local setup
 
-1. **Python env**
-   ```
-   python -m venv venv
-   source venv/bin/activate      # Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
+This project is easiest to run locally with a Python 3.12 environment and real AWS credentials from the sandbox access portal. The AWS credentials are temporary and expire every ~12 hours, so you may need to refresh them during a session.
 
-2. **Credentials** - copy `.env.example` to `.env` and fill in the three AWS
-   values from the access portal (Access keys). These are temporary sandbox
-   credentials and **expire every 12 hours** - you'll need to refresh them
-   from the portal each session.
+### 1) Create a Python environment
 
-3. **Confirm region + model access** - in the Bedrock console, make sure
-   you're in `us-east-1` and have access to the model ID in `.env`
-   (`BEDROCK_MODEL_ID`). Test it in the Bedrock playground first if unsure.
+macOS / Linux:
 
-4. **Test Bedrock connectivity:**
-   ```
-   python test_bedrock.py
-   ```
-   You should see a one-sentence greeting printed. Don't move on until this works.
-
-5. **Create the DynamoDB table:**
-   ```
-   python scripts/setup_dynamodb.py
-   ```
-6. **Run the full local demo** (no Lambda deployment needed yet):
-   ```
-   python scripts/run_local_demo.py
-   ```
-   This extracts the sample contract, creates a case, confirms it, then
-   simulates time passing so you can see escalation messages get drafted.
-   If this works end to end, your core logic is solid.
-
-## Deploying a Lambda
-
-Each Lambda needs its dependencies + the shared `common/` code bundled with
-its handler. The build scripts do this for you:
-
-```
-./build_lambda.sh create_case          # Mac/Linux
-.\build_lambda.ps1 create_case         # Windows PowerShell
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
-This produces `build/create_case.zip`. In the Lambda console:
-1. Create a function (Python 3.12 runtime recommended - match whatever
-   version you're developing locally).
-2. Upload `build/create_case.zip` directly (drag and drop, or "Upload from" -
-   .zip file).
-3. Set the handler to `handler.lambda_handler`.
-4. Attach an IAM role with permissions for `bedrock:InvokeModel`,
-   `dynamodb:GetItem`/`PutItem`/`UpdateItem`/`Scan` on your table, and
-   `s3:GetObject`/`PutObject` if you're using S3 for uploads.
-5. Set environment variables on the function to match your `.env` (Lambda
-   doesn't read your local `.env` file - you set these in the console under
-   Configuration > Environment variables).
-6. Enable a **Function URL** (Configuration > Function URL) so the frontend
-   can call it directly - this avoids the added cost/complexity of API Gateway.
+Windows (PowerShell):
 
-Repeat for each of the six lambdas: `create_case`, `get_case`,
-`confirm_case`, `timeline`, `advance_time`, `daily_check`.
+```powershell
+py -3.12 -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
 
-For `daily_check`, instead of a Function URL, set up an **EventBridge
-Scheduler** rule (e.g. once a day) as its trigger - it's meant to run in the
-background, not be called by the frontend.
+### 2) Copy your environment variables
+
+Copy `.env.example` to `.env` and fill in values from the AWS access portal.
+
+macOS / Linux:
+
+```bash
+cp .env.example .env
+```
+
+Windows (PowerShell):
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Your `.env` should look like this:
+
+```env
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
+AWS_SESSION_TOKEN=...
+AWS_REGION=us-east-1
+BEDROCK_MODEL_ID=us.anthropic.claude-opus-4-6-v1
+DYNAMODB_TABLE=Cases
+S3_BUCKET=contract-advocate-uploads
+```
+
+Important:
+
+- These are TEMPORARY AWS sandbox credentials.
+- They expire and need refreshing.
+- Do not copy these into the Lambda environment variables in AWS.
+- Lambda should use its IAM execution role instead.
+
+### 3) Confirm Bedrock access
+
+In the AWS Bedrock console, make sure:
+
+- you are in `us-east-1`
+- the model in `BEDROCK_MODEL_ID` is enabled in your account
+- the model works in the Bedrock playground before trying the Lambda
+
+### 4) Test Bedrock connectivity locally
+
+```bash
+python test_bedrock.py
+```
+
+You should see a one-sentence greeting printed. Do not continue until this works.
+
+### 5) Create the DynamoDB table
+
+```bash
+python scripts/setup_dynamodb.py
+```
+
+### 6) Run the full local demo
+
+```bash
+python scripts/run_local_demo.py
+```
+
+This extracts the sample contract, creates a case, confirms it, then simulates time passing so you can see escalation messages get drafted.
+
+## Building a Lambda package
+
+Lambda runs on Linux, not Windows. If you package the zip on a native Windows machine, compiled libraries like `cryptography` can break inside the Lambda runtime.
+
+The safest options are:
+
+- Windows: use WSL
+- macOS: use a Linux container or local Linux environment
+- easiest cross-platform option: Docker
+
+### Option A: WSL on Windows
+
+Open WSL and run:
+
+```bash
+cd /mnt/c/Users/your-user/Desktop/contract-advocate/contract-advocate
+python3.12 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+chmod +x build_lambda.sh
+./build_lambda.sh create_case
+```
+
+This creates:
+
+```text
+build/create_case.zip
+```
+
+### Option B: Docker (works on macOS and Windows)
+
+From the repo root:
+
+```bash
+docker run --rm -it -v "$PWD":/app -w /app python:3.12 bash
+```
+
+Then inside the container:
+
+```bash
+pip install -r requirements.txt
+apt-get update && apt-get install -y zip
+chmod +x build_lambda.sh
+./build_lambda.sh create_case
+```
+
+This creates the zip in your local repo folder, so it appears as:
+
+```text
+build/create_case.zip
+```
+
+Important:
+
+- do not upload the folder `build/create_case`
+- upload the zip file directly
+
+## Deploying a Lambda in AWS
+
+Each Lambda needs its dependencies + the shared `common/` code bundled with its handler. The build script does this for you.
+
+### 1) Create the Lambda function
+
+In AWS Lambda:
+
+1. Click Create function
+2. Choose Author from scratch
+3. Runtime: Python 3.12
+4. Function name: `create_case`
+5. Create function
+
+### 2) Upload the zip
+
+On the Code tab:
+
+- choose Upload from
+- select `.zip file`
+- upload `build/create_case.zip`
+
+### 3) Set the handler
+
+Set the handler to:
+
+```text
+handler.lambda_handler
+```
+
+### 4) Set the timeout
+
+Set the timeout to at least 30 seconds for `create_case` because it does PDF extraction + model inference + DynamoDB writes.
+
+### 5) Set environment variables
+
+Under Configuration > Environment variables, set only the app values, not AWS secret keys.
+
+```env
+AWS_REGION=us-east-1
+BEDROCK_MODEL_ID=us.anthropic.claude-opus-4-6-v1
+DYNAMODB_TABLE=Cases
+S3_BUCKET=contract-advocate-uploads
+```
+
+Do not add these keys to Lambda environment variables:
+
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_SESSION_TOKEN`
+
+### 6) Create the execution role policy
+
+This is the most important AWS step. The function needs an IAM role with permission to call Bedrock and DynamoDB.
+
+In the Lambda console:
+
+1. Open the function
+2. Go to Configuration > Permissions
+3. Click the execution role name
+4. In IAM, click Add permissions > Create inline policy
+5. Choose JSON
+6. Paste:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "BedrockInvoke",
+      "Effect": "Allow",
+      "Action": ["bedrock:InvokeModel"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DynamoCaseTableAccess",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:Scan"
+      ],
+      "Resource": ["arn:aws:dynamodb:us-east-1:YOUR_ACCOUNT_ID:table/Cases"]
+    },
+    {
+      "Sid": "S3UploadAccess",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject"],
+      "Resource": ["arn:aws:s3:::contract-advocate-uploads/*"]
+    }
+  ]
+}
+```
+
+Replace:
+
+- `YOUR_ACCOUNT_ID` with your AWS account ID
+- `us-east-1` with your region if different
+- `Cases` with your table name if changed
+
+### 7) Test the function
+
+For a smoke test, use a Function URL with auth type `NONE`.
+
+Why: `AWS_IAM` requires signed AWS requests, which causes `403 Forbidden` from a browser or Postman unless you add SigV4 signing. For internal testing, `NONE` is the easiest choice.
+
+#### Function URL setup
+
+1. Configuration > Function URL
+2. Create function URL
+3. Auth type: `NONE`
+4. Save
+
+Then test with:
+
+```json
+{
+  "user_id": "demo-user",
+  "pdf_base64": "<base64 encoded PDF bytes>"
+}
+```
+
+For local testing, use the same PDF file and base64 encode it with:
+
+```bash
+python -c "import base64; print(base64.b64encode(open('sample.pdf','rb').read()).decode())"
+```
+
+### 8) Repeat for every Lambda
+
+Repeat the same deployment flow for:
+
+- `create_case`
+- `get_case`
+- `confirm_case`
+- `timeline`
+- `advance_time`
+- `daily_check`
+
+For `daily_check`, do not use a Function URL. Trigger it with an EventBridge Scheduler rule instead.
+
+## Team handoff checklist
+
+For anyone new to AWS, these are the tasks to complete in order:
+
+1. Copy `.env.example` to `.env` and fill in AWS sandbox credentials
+2. Run `python test_bedrock.py` locally and confirm it works
+3. Run `python scripts/setup_dynamodb.py`
+4. Build the Lambda zip in Docker/WSL
+5. Upload the zip to Lambda using Python 3.12 runtime
+6. Set environment variables in the Lambda console
+7. Create the execution role policy with Bedrock + DynamoDB permissions
+8. Enable Function URL with auth type `NONE` for testing
+9. Test with a real PDF payload
+10. Repeat for the next Lambda
+
+This is the exact flow we used to get the backend working and is simple enough for a teammate with no AWS background to follow step by step.
 
 ## API contract (for the frontend team)
 
 **`POST /cases`**
+
 ```json
 // request
 { "user_id": "demo-user", "pdf_base64": "<base64-encoded PDF bytes>" }
@@ -120,6 +356,7 @@ background, not be called by the frontend.
 obligations, message_history).
 
 **`POST /cases/{case_id}/confirm`**
+
 ```json
 // request (obligations optional - only send if the user edited something)
 { "obligations": [ { "type": "payment_due", "date": "2026-09-10", ... } ] }
@@ -128,11 +365,16 @@ obligations, message_history).
 ```
 
 **`GET /cases/{case_id}/timeline`**
+
 ```json
-{ "case_id": "abc123", "events": [ { "date": "...", "type": "...", "detail_or_content": "..." } ] }
+{
+  "case_id": "abc123",
+  "events": [{ "date": "...", "type": "...", "detail_or_content": "..." }]
+}
 ```
 
 **`POST /cases/{case_id}/advance-time`** - demo/debug only, not a real feature
+
 ```json
 // request
 { "days": 25 }
