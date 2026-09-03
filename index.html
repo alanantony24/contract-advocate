@@ -917,12 +917,6 @@
             <p>Supports text-based PDF agreements (up to 4.5 MB)</p>
             <input type="file" id="fileInput" accept="application/pdf" style="display: none;" />
             <button class="btn btn-primary" id="chooseFileBtn">Browse Files</button>
-            <div class="quick-sample-box">
-              <span style="font-size: 12px; color: var(--muted);">Demo Shortcut:</span>
-              <button class="btn btn-secondary btn-sm" id="loadSampleBtn">
-                ⚡ Load Sample Freelance Contract ($3,000 SGD)
-              </button>
-            </div>
           </div>
         </section>
 
@@ -1164,9 +1158,6 @@
         timeline: "https://bzdwe3bbv3h7oabiko26nidkcu0xkubz.lambda-url.us-east-1.on.aws/",
         advanceTime: "https://gmyttojs5copjarjx2xxvvgzom0cqdpi.lambda-url.us-east-1.on.aws/"
       };
-
-      // Built-in sample contract base64 (Acme Consulting $3,000 SGD)
-      const SAMPLE_PDF_BASE64 = "JVBERi0xLjQKMSAwIG9iaiA8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4gZW5kb2JqCjIgMCBvYmogPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4gZW5kb2JqCjMgMCBvYmogPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA2MTIgNzkyXSAvQ29udGVudHMgNCAwIFIgL1Jlc291cmNlcyA8PCAvRm9udCA8PCAvRjEgNSAwIFIgPj4gPj4gPj4gZW5kb2JqCjQgMCBvYmogPDwgL0xlbmd0aCAyMDU3ID4+CnN0cmVhbQpCVAovRjEgMTIgVGYKNTAgNzUwIFRkCjE1IFRMCihJTkRFUEVOREVOVCBDT05UUkFDVE9SIEFHUkVFTUVOVCkgJwooKSAnCihUaGlzIEFncmVlbWVudCBpcyBlbnRlcmVkIGludG8gYmV0d2VlbiBBY21lIENvbnN1bHRpbmcgUHRlIEx0ZCBcKCJDbGllbnQiXCkgYW5kKSAnCihKb3JkYW4gTGVlLCBGcmVlbGFuY2UgV2ViIERldmVsb3BlciBcKCJDb250cmFjdG9yIlwpLCBzaWduZWQgYW5kIGRhdGVkIEF1Z3VzdCAxNSwgMjAyNi4pICcKKCkgJwooMS4gU2NvcGUgb2YgV29yaykgJwooVGhlIENvbnRyYWN0b3IgYWdyZWVzIHRvIGRlc2lnbiBhbmQgZGV2ZWxvcCBhIG1hcmtldGluZyB3ZWJzaXRlIGZvciB0aGUgQ2xpZW50LCkgJwooaW5jbHVkaW5nIHVwIHRvIDUgcGFnZXMsIHJlc3BvbnNpdmUgZGVzaWduLCBhbmQgYSBjb250YWN0IGZvcm0gaW50ZWdyYXRpb24uKSAnCigpICcKKDIuIFBheW1lbnQgVGVybXMpICcKKFRoZSBDbGllbnQgYWdyZWVzIHRvIHBheSB0aGUgQ29udHJhY3RvciBhIHRvdGFsIGZlZSBvZiAkMywwMDAgU0dELiBQYXltZW50IGlzIGR1ZSkgJwoobm8gbGF0ZXIgdGhhbiBTZXB0ZW1iZXIgMTAsIDIwMjYuIFBheW1lbnQgc2hhbGwgYmUgbWFkZSB2aWEgYmFuayB0cmFuc2ZlciB0byB0aGUpICcKKGFjY291bnQgcHJvdmlkZWQgYnkgdGhlIENvbnRyYWN0b3IuKSAnCigpICcKKDMuIERlbGl2ZXJhYmxlcykgJwooVGhlIENvbnRyYWN0b3Igc2hhbGwgZGVsaXZlciB0aGUgY29tcGxldGVkIHdlYnNpdGUgbm8gbGF0ZXIgdGhhbiBTZXB0ZW1iZXIgNSwgMjAyNi4pICcKKCkgJwooNC4gSW50ZWxsZWN0dWFsIFByb3BlcnR5KSAnCihBbGwgd29yayBwcm9kdWN0IHNoYWxsIGJlY29tZSB0aGUgZXhjbHVzaXZlIHByb3BlcnR5IG9mIHRoZSBDbGllbnQgb25seSB1cG9uIHJlY2VpcHQpICcKKG9mIGZ1bGwgcGF5bWVudC4gUHJpb3IgdG8gZnVsbCBwYXltZW50LCBhbGwgcmlnaHRzIHJlbWFpbiB3aXRoIHRoZSBDb250cmFjdG9yLikgJwooKSAnCig1LiBUZXJtaW5hdGlvbikgJwooRWl0aGVyIHBhcnR5IG1heSB0ZXJtaW5hdGUgdGhpcyBBZ3JlZW1lbnQgd2l0aCAxNCBkYXlzIHdyaXR0ZW4gbm90aWNlLiBJZiB0aGUgQ2xpZW50KSAnCih0ZXJtaW5hdGVzIHdpdGhvdXQgY2F1c2UsIGFsbCB3b3JrIGNvbXBsZXRlZCB0byBkYXRlIHNoYWxsIGJlIHBhaWQgaW4gZnVsbCB3aXRoaW4pICcKKDcgZGF5cyBvZiB0ZXJtaW5hdGlvbi4pICcKKCkgJwooNi4gTGlhYmlsaXR5KSAnCihUaGUgQ29udHJhY3RvcidzIHRvdGFsIGxpYWJpbGl0eSB1bmRlciB0aGlzIEFncmVlbWVudCBzaGFsbCBub3QgZXhjZWVkIHRoZSB0b3RhbCkgJwooZmVlcyBwYWlkLCBleGNlcHQgaW4gY2FzZXMgb2YgZ3Jvc3MgbmVnbGlnZW5jZSBvciB3aWxsZnVsIG1pc2NvbmR1Y3QuKSAnCigpICcKKDcuIE5vbi1Db21wZXRlKSAnCihUaGUgQ29udHJhY3RvciBhZ3JlZXMgbm90IHRvIHByb3ZpZGUgc2ltaWxhciB3ZWIgZGV2ZWxvcG1lbnQgc2VydmljZXMgdG8gYW55IGRpcmVjdCkgJwooY29tcGV0aXRvciBvZiB0aGUgQ2xpZW50IGZvciBhIHBlcmlvZCBvZiAyNCBtb250aHMgZm9sbG93aW5nIHRoZSBjb21wbGV0aW9uIG9mIHRoaXMpICcKKEFncmVlbWVudCwgd2l0aGluIHRoZSBzYW1lIGluZHVzdHJ5IGFuZCBnZW9ncmFwaGljIHJlZ2lvbi4pICcKKCkgJwooOC4gUmVuZXdhbCkgJwooVGhpcyBBZ3JlZW1lbnQgbWF5IGJlIHJlbmV3ZWQgZm9yIGFkZGl0aW9uYWwgcHJvamVjdHMuIElmIHRoZSBDbGllbnQgd2lzaGVzIHRvIGVuZ2FnZSkgJwoodGhlIENvbnRyYWN0b3IgZm9yIGEgZm9sbG93LXVwIHByb2plY3QsIHRoZSBDbGllbnQgbXVzdCBwcm92aWRlIHdyaXR0ZW4gbm90aWNlIGF0KSAnCihsZWFzdCAzMCBkYXlzIGJlZm9yZSB0aGUgb25lLXllYXIgYW5uaXZlcnNhcnkgb2YgdGhpcyBBZ3JlZW1lbnQgXChpLmUuIGJ5IG5vIGxhdGVyKSAnCih0aGFuIEp1bHkgMTYsIDIwMjdcKSwgb3IgdGhlIHByZWZlcmVudGlhbCByYXRlIG91dGxpbmVkIGluIHRoaXMgQWdyZWVtZW50IHdpbGwgbm8pICcKKGxvbmdlciBhcHBseS4pICcKKCkgJwpFVAplbmRzdHJlYW0KZW5kb2JqCjUgMCBvYmogPDwgL1R5cGUgL0ZvbnQgL1N1YnR5cGUgL1R5cGUxIC9CYXNlRm9udCAvSGVsdmV0aWNhID4+IGVuZG9iagp4cmVmCjAgNgowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMDkgMDAwMDAgbiAKMDAwMDAwMDA1OCAwMDAwMCBuIAowMDAwMDAwMTE1IDAwMDAwIG4gCjAwMDAwMDAyNDQgMDAwMDAgbiAKMDAwMDAwMDAwMCAwMDAwMCBuIAp0cmFpbGVyIDw8IC9TaXplIDYgL1Jvb3QgMSAwIFIgPj4Kc3RhcnR4cmVmCjAKJSVFT0Y=";
 
       // State Management
       const state = {
@@ -1596,9 +1587,7 @@
       const fileInput = $("#fileInput");
 
       $("#chooseFileBtn").onclick = () => fileInput.click();
-      dropzone.onclick = (e) => {
-        if (e.target.id !== "loadSampleBtn") fileInput.click();
-      };
+      dropzone.onclick = () => fileInput.click();
 
       ["dragover", "dragenter"].forEach((ev) => {
         dropzone.addEventListener(ev, (e) => {
@@ -1630,12 +1619,6 @@
           const b64 = await fileToBase64(file);
           uploadContractPdf(b64);
         }
-      };
-
-      // Load Sample Demo Button
-      $("#loadSampleBtn").onclick = (e) => {
-        e.stopPropagation();
-        uploadContractPdf(SAMPLE_PDF_BASE64);
       };
 
       // Confirm & Tracking Buttons
