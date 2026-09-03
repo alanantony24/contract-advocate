@@ -9,13 +9,21 @@ from common import dynamo
 
 
 def lambda_handler(event, context):
-    if event.get("httpMethod") == "OPTIONS":
+    request_context = event.get("requestContext", {})
+    http_context = request_context.get("http", {})
+    http_method = event.get("httpMethod") or http_context.get("method")
+    if http_method == "OPTIONS":
         return _response(200, {"ok": True})
 
-    params = event.get("pathParameters") or {}
-    case_id = params.get("case_id")
-    body = json.loads(event.get("body", "{}"))
+    body = {}
+    raw_body = event.get("body")
+    if raw_body:
+        try:
+            body = json.loads(raw_body)
+        except Exception:
+            body = {}
 
+    case_id = _get_case_id(event, body)
     if not case_id:
         return _response(400, {"error": "case_id is required"})
 
@@ -33,6 +41,22 @@ def lambda_handler(event, context):
         "last_action_date": date.today().isoformat(),
     })
     return _response(200, {"status": "AWAITING_PAYMENT"})
+
+
+def _get_case_id(event, body):
+    params = event.get("pathParameters") or {}
+    if "case_id" in params and params["case_id"]:
+        return params["case_id"]
+    qs = event.get("queryStringParameters") or {}
+    if "case_id" in qs and qs["case_id"]:
+        return qs["case_id"]
+    if isinstance(body, dict) and body.get("case_id"):
+        return body["case_id"]
+    raw_path = event.get("rawPath") or ""
+    parts = [p for p in raw_path.strip("/").split("/") if p and p not in ("cases", "confirm")]
+    if parts:
+        return parts[0]
+    return None
 
 
 def _response(status_code, body_dict):

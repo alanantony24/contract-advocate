@@ -8,11 +8,13 @@ from common import dynamo
 
 
 def lambda_handler(event, context):
-    if event.get("httpMethod") == "OPTIONS":
+    request_context = event.get("requestContext", {})
+    http_context = request_context.get("http", {})
+    http_method = event.get("httpMethod") or http_context.get("method")
+    if http_method == "OPTIONS":
         return _response(200, {"ok": True})
 
-    params = event.get("pathParameters") or {}
-    case_id = params.get("case_id")
+    case_id = _get_case_id(event)
     if not case_id:
         return _response(400, {"error": "case_id is required"})
 
@@ -25,6 +27,20 @@ def lambda_handler(event, context):
     events.sort(key=lambda e: e.get("date", ""))
 
     return _response(200, {"case_id": case_id, "events": events})
+
+
+def _get_case_id(event):
+    params = event.get("pathParameters") or {}
+    if "case_id" in params and params["case_id"]:
+        return params["case_id"]
+    qs = event.get("queryStringParameters") or {}
+    if "case_id" in qs and qs["case_id"]:
+        return qs["case_id"]
+    raw_path = event.get("rawPath") or ""
+    parts = [p for p in raw_path.strip("/").split("/") if p and p not in ("cases", "timeline")]
+    if parts:
+        return parts[0]
+    return None
 
 
 def _response(status_code, body_dict):
