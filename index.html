@@ -1006,7 +1006,7 @@
           </button>
           <button class="nav-item" data-view="portfolioView">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-            My Contracts (<span id="sidebarCount">3</span>)
+            My Contracts (<span id="sidebarCount">0</span>)
           </button>
           <button class="nav-item" data-view="reviewView">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -1085,17 +1085,17 @@
           <div class="stats-grid">
             <div class="stat-card highlight">
               <span class="stat-label">Total Contract Value</span>
-              <span class="stat-value" id="portfolioTotalValue">$10,200 SGD</span>
+              <span class="stat-value" id="portfolioTotalValue">$0 SGD</span>
               <span class="stat-sub">Across all tracked clients</span>
             </div>
             <div class="stat-card">
               <span class="stat-label">Active Agreements</span>
-              <span class="stat-value" id="portfolioActiveCount">3</span>
+              <span class="stat-value" id="portfolioActiveCount">0</span>
               <span class="stat-sub">Monitored by agent</span>
             </div>
             <div class="stat-card">
               <span class="stat-label">Pending / Overdue</span>
-              <span class="stat-value" id="portfolioOverdueCount">3</span>
+              <span class="stat-value" id="portfolioOverdueCount">0</span>
               <span class="stat-sub">Awaiting client payment</span>
             </div>
             <div class="stat-card">
@@ -1122,7 +1122,7 @@
                   </tr>
                 </thead>
                 <tbody id="portfolioTableBody">
-                  <tr><td colspan="6" style="text-align: center; color: var(--muted);">No contracts loaded yet.</td></tr>
+                  <tr><td colspan="6" style="text-align: center; padding: 28px; color: var(--muted);">No contracts uploaded yet. <a href="javascript:void(0)" onclick="switchView('uploadView')" style="color: var(--primary); font-weight: 700;">Upload a contract</a> to start tracking with AWS Bedrock.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1146,7 +1146,7 @@
           <div class="stats-grid">
             <div class="stat-card highlight">
               <span class="stat-label">Contract Status</span>
-              <span class="stat-value" id="reviewStatus" style="font-size: 18px;">EXTRACTED</span>
+              <span class="stat-value" id="reviewStatus" style="font-size: 18px;">IDLE</span>
               <span class="stat-sub">Ready for confirmation</span>
             </div>
             <div class="stat-card">
@@ -1176,7 +1176,7 @@
                 </div>
               </div>
               <div class="card-body" id="clausesContainer">
-                <p style="color: var(--muted);">No clauses loaded.</p>
+                <p style="color: var(--muted);">No clauses loaded. Upload a contract to analyze.</p>
               </div>
             </div>
 
@@ -1272,11 +1272,11 @@
             <div class="contact-settings-row">
               <div class="contact-field">
                 <label>Registered Freelancer Email (for Payment Alerts)</label>
-                <input type="email" id="freelancerEmailInput" value="jordan.freelance@gmail.com" />
+                <input type="email" id="freelancerEmailInput" placeholder="your.email@example.com" />
               </div>
               <div class="contact-field">
                 <label>Registered WhatsApp / Phone Number</label>
-                <input type="text" id="freelancerPhoneInput" value="+6591234567" />
+                <input type="text" id="freelancerPhoneInput" placeholder="+1234567890" />
               </div>
             </div>
 
@@ -1287,7 +1287,7 @@
                 <span class="chip chip-payment" id="alertDeliveryStatus">Dispatched via EventBridge</span>
               </div>
               <div class="outbound-bubble" id="whatsappBubbleText">
-                ⚡ <strong>Contract Advocate Alert</strong>: Payment for <strong>Acme Consulting</strong> ($3,000 SGD) is now overdue. Our AI Agent has prepared an escalated follow-up email draft for you.
+                Alert details will be generated when payment is overdue.
               </div>
               <div class="outbound-actions">
                 <a href="#" target="_blank" class="btn btn-whatsapp btn-sm" id="sendWhatsAppBtn">
@@ -1323,7 +1323,7 @@
                   </tr>
                 </thead>
                 <tbody id="trackerObligationsBody">
-                  <tr><td colspan="6" style="text-align: center; color: var(--muted);">No active obligations.</td></tr>
+                  <tr><td colspan="6" style="text-align: center; color: var(--muted);">No active obligations loaded.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1352,15 +1352,15 @@
                 <div class="draft-box">
                   <div class="draft-field">
                     <label>Recipient Client</label>
-                    <input type="text" id="draftTo" value="client@example.com" />
+                    <input type="text" id="draftTo" placeholder="client@example.com" />
                   </div>
                   <div class="draft-field">
                     <label>Subject</label>
-                    <input type="text" id="draftSubject" value="Follow-up regarding invoice payment" />
+                    <input type="text" id="draftSubject" placeholder="Follow-up regarding invoice payment" />
                   </div>
                   <div class="draft-field">
                     <label>Message Content</label>
-                    <textarea id="draftMessage" placeholder="No message draft has been generated yet. Advance time to simulate payment becoming overdue."></textarea>
+                    <textarea id="draftMessage" placeholder="No message draft has been generated yet. Advance time or run daily check on AWS to generate follow-up."></textarea>
                   </div>
                 </div>
               </div>
@@ -1405,7 +1405,7 @@
           <div class="page-header">
             <div class="page-title">
               <h1>Long-Horizon Event Timeline</h1>
-              <p>Full audit trail of contract ingestion, user confirmations, time steps, and AI actions.</p>
+              <p>Full audit trail of contract ingestion, user confirmations, time steps, and AI actions from AWS DynamoDB.</p>
             </div>
           </div>
 
@@ -1424,8 +1424,8 @@
     <div class="loading-overlay" id="loadingOverlay">
       <div class="loading-card">
         <div class="spinner"></div>
-        <h3 id="loadingTitle" style="font-size: 18px; font-weight: 700;">Processing Contract...</h3>
-        <p id="loadingMsg" style="color: var(--muted); font-size: 13px;">Extracting text & running Bedrock Claude analysis</p>
+        <h3 id="loadingTitle" style="font-size: 18px; font-weight: 700;">Processing with AWS Bedrock...</h3>
+        <p id="loadingMsg" style="color: var(--muted); font-size: 13px;">Calling AWS Lambda & Amazon Bedrock Claude</p>
       </div>
     </div>
 
@@ -1442,43 +1442,12 @@
         advanceTime: "https://gmyttojs5copjarjx2xxvvgzom0cqdpi.lambda-url.us-east-1.on.aws/"
       };
 
-      // Initial Seed Contracts for Multi-Contract Demo
-      const DEFAULT_CONTRACTS = [
-        {
-          case_id: "71011636-085d-4503-bee6-958cc3547b39",
-          client_name: "Acme Consulting Pte Ltd",
-          title: "Marketing Website Agreement",
-          amount: 3000,
-          due_date: "2026-09-10",
-          status: "AWAITING_PAYMENT",
-          updated_at: "2026-09-03"
-        },
-        {
-          case_id: "orbit-tech-9283-4a11-8932",
-          client_name: "Orbit Media Group",
-          title: "Full-Stack Web App Scope",
-          amount: 5400,
-          due_date: "2026-09-28",
-          status: "AWAITING_PAYMENT",
-          updated_at: "2026-09-01"
-        },
-        {
-          case_id: "nexus-design-1182-5b90-1284",
-          client_name: "Nexus Innovations",
-          title: "UI/UX Redesign Deliverables",
-          amount: 1800,
-          due_date: "2026-10-05",
-          status: "EXTRACTED",
-          updated_at: "2026-08-28"
-        }
-      ];
-
-      // State Management
+      // State Management (Purely dynamically loaded from AWS & localStorage)
       const state = {
-        contractsList: JSON.parse(localStorage.getItem("all_cases_list") || JSON.stringify(DEFAULT_CONTRACTS)),
-        currentCaseId: localStorage.getItem("current_case_id") || DEFAULT_CONTRACTS[0].case_id,
-        userEmail: localStorage.getItem("user_email") || "jordan.freelance@gmail.com",
-        userPhone: localStorage.getItem("user_phone") || "+6591234567",
+        contractsList: JSON.parse(localStorage.getItem("all_cases_list") || "[]"),
+        currentCaseId: localStorage.getItem("current_case_id") || null,
+        userEmail: localStorage.getItem("user_email") || "",
+        userPhone: localStorage.getItem("user_phone") || "",
         caseData: null,
         timelineData: [],
         simulatedDays: 0,
@@ -1538,7 +1507,7 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      // API Client with fallback support
+      // API Client with direct AWS Lambda integration
       async function apiCall(endpoint, method = "GET", body = null, caseId = null) {
         let url = endpoint;
         if (caseId) {
@@ -1567,11 +1536,11 @@
             try { data = JSON.parse(data.body); } catch(e) {}
           }
           if (!res.ok) {
-            throw new Error(data.error || `HTTP ${res.status}`);
+            throw new Error(data.error || `AWS HTTP ${res.status}`);
           }
           return data;
         } catch (err) {
-          console.warn(`API call to ${url} failed:`, err);
+          console.warn(`AWS API call to ${url} failed:`, err);
           throw err;
         }
       }
@@ -1590,40 +1559,54 @@
         });
       }
 
-      // Ingest PDF & Create Case
+      // Ingest PDF & Create Case directly on AWS
       async function uploadContractPdf(base64Data, filename = "Uploaded Contract") {
-        showLoading("Analyzing Contract with AI", "Bedrock Claude extracting clauses & date-bound obligations...");
+        showLoading("Extracting Contract via AWS Bedrock", "Calling AWS Lambda create_case and Claude 3.7...");
         try {
           const res = await apiCall(API.createCase, "POST", {
-            user_id: "demo-user",
+            user_id: "freelancer-user",
             pdf_base64: base64Data
           });
 
           if (res && res.case_id) {
             state.currentCaseId = res.case_id;
             localStorage.setItem("current_case_id", res.case_id);
-            
-            // Add to multi-contract list
+            toast("AWS Case Created: " + res.case_id);
+
+            // Fetch live data directly from AWS DynamoDB
+            const liveCase = await apiCall(API.getCase, "GET", null, res.case_id);
+            state.caseData = liveCase;
+
+            // Extract client name and fee from live Bedrock data
+            let clientName = filename.replace(".pdf", "");
+            let feeAmt = 0;
+            let nextDue = "";
+            (liveCase.obligations || []).forEach((o) => {
+              if (o.type === "payment_due") {
+                if (o.amount) feeAmt = parseAmount(o.amount);
+                if (o.date) nextDue = o.date;
+              }
+            });
+
             const newContract = {
               case_id: res.case_id,
-              client_name: filename.replace(".pdf", ""),
+              client_name: clientName,
               title: "Freelance Agreement",
-              amount: 3000,
-              due_date: new Date().toISOString().split("T")[0],
-              status: "EXTRACTED",
+              amount: feeAmt,
+              due_date: nextDue,
+              status: liveCase.status || "EXTRACTED",
               updated_at: new Date().toISOString().split("T")[0]
             };
+
             state.contractsList.unshift(newContract);
             saveContracts();
-
-            toast("Case created: " + res.case_id);
-            await fetchCaseDetails(res.case_id);
+            renderCase(liveCase);
             switchView("reviewView");
           } else {
-            throw new Error("Invalid response from create_case");
+            throw new Error("Invalid response from AWS create_case");
           }
         } catch (err) {
-          toast("Backend error: " + err.message);
+          toast("AWS Error: " + err.message);
           console.error(err);
         } finally {
           hideLoading();
@@ -1648,21 +1631,22 @@
         toast("Switched active contract");
       }
 
-      // Fetch Full Case Details
+      // Fetch Full Case Details from AWS
       async function fetchCaseDetails(caseId) {
         if (!caseId) return;
         try {
           const data = await apiCall(API.getCase, "GET", null, caseId);
           if (data && data.case_id) {
             state.caseData = data;
+            updateContractStatus(caseId, data.status);
             renderCase(data);
           }
         } catch (err) {
-          console.error("fetchCaseDetails error:", err);
+          console.error("fetchCaseDetails error from AWS:", err);
         }
       }
 
-      // Fetch Timeline
+      // Fetch Timeline from AWS
       async function fetchTimeline(caseId) {
         if (!caseId) return;
         try {
@@ -1673,7 +1657,7 @@
             return;
           }
         } catch (err) {
-          console.warn("fetchTimeline fallback to case data:", err);
+          console.warn("fetchTimeline error from AWS:", err);
         }
 
         if (state.caseData) {
@@ -1686,7 +1670,7 @@
         }
       }
 
-      // Confirm Obligations
+      // Confirm Obligations on AWS
       async function confirmCase() {
         if (!state.currentCaseId) return toast("No active case to confirm");
 
@@ -1703,29 +1687,20 @@
           }
         });
 
-        showLoading("Confirming Obligations", "Starting long-horizon tracker...");
+        showLoading("Confirming Obligations on AWS", "Updating DynamoDB & starting tracker...");
         try {
-          const res = await apiCall(API.confirmCase, "POST", {
+          await apiCall(API.confirmCase, "POST", {
             case_id: state.currentCaseId,
             obligations: editedObligations.length ? editedObligations : (state.caseData?.obligations || [])
           }, state.currentCaseId);
 
-          toast("Tracking started! Status: AWAITING_PAYMENT");
+          toast("Tracking started on AWS! Status: AWAITING_PAYMENT");
           updateContractStatus(state.currentCaseId, "AWAITING_PAYMENT");
           await fetchCaseDetails(state.currentCaseId);
           await fetchTimeline(state.currentCaseId);
           switchView("trackerView");
         } catch (err) {
-          if (state.caseData) {
-            state.caseData.status = "AWAITING_PAYMENT";
-            if (editedObligations.length) state.caseData.obligations = editedObligations;
-            updateContractStatus(state.currentCaseId, "AWAITING_PAYMENT");
-            renderCase(state.caseData);
-            toast("Tracking confirmed");
-            switchView("trackerView");
-          } else {
-            toast("Confirm failed: " + err.message);
-          }
+          toast("AWS Confirm Error: " + err.message);
         } finally {
           hideLoading();
         }
@@ -1739,13 +1714,13 @@
         }
       }
 
-      // Advance Time Simulation with dynamic input
+      // Advance Time Simulation directly on AWS Lambda
       async function advanceTime(days) {
         if (!state.currentCaseId) return toast("Please upload and confirm a contract first!");
 
         const numDays = Number(days) || Number($("#simDaysInput")?.value) || 25;
         state.simulatedDays += numDays;
-        showLoading("Simulating Time Passing", `Advancing +${numDays} days (Total: ${state.simulatedDays}d)...`);
+        showLoading("Executing on AWS Lambda", `Advancing +${numDays} days via state_machine...`);
 
         try {
           const updatedCase = await apiCall(API.advanceTime, "POST", {
@@ -1762,81 +1737,59 @@
           }
           await fetchTimeline(state.currentCaseId);
           dispatchLiveNotification(state.caseData, numDays);
-          toast(`Simulated +${numDays} days!`);
+          toast(`AWS State Machine executed (+${numDays}d)!`);
           switchView("trackerView");
         } catch (err) {
-          simulateLocalEscalation(numDays);
+          toast("AWS Error: " + err.message);
         } finally {
           hideLoading();
         }
       }
 
-      // WhatsApp / Email Multi-Channel Notification Dispatcher
+      // WhatsApp / Email Multi-Channel Notification Dispatcher from live AWS data
       function dispatchLiveNotification(c, numDays) {
         if (!c) return;
         const card = $("#whatsappAlertCard");
         const bubble = $("#whatsappBubbleText");
         
         const activeContract = state.contractsList.find((item) => item.case_id === state.currentCaseId);
-        const clientName = activeContract ? activeContract.client_name : "Acme Consulting Pte Ltd";
-        const contractTitle = activeContract ? activeContract.title : "Freelance Agreement";
-        const feeAmount = activeContract ? formatCurrency(activeContract.amount) : "$3,000 SGD";
+        const clientName = activeContract ? activeContract.client_name : (c.obligations && c.obligations[0]?.party_responsible || "Client");
+        const contractTitle = activeContract ? activeContract.title : "Contract Agreement";
+        
+        let totalAmt = 0;
+        (c.obligations || []).forEach((o) => {
+          if (o.type === "payment_due") totalAmt += parseAmount(o.amount);
+        });
+        const feeAmount = totalAmt > 0 ? `$${totalAmt.toLocaleString()} SGD` : "$0 SGD";
         
         const stageNum = c.escalation_stage || 1;
         const toneDesc = stageNum === 1 ? "polite reminder" : (stageNum === 2 ? "firm follow-up" : "small-claims final notice");
         const deepLink = `${window.location.origin}${window.location.pathname}?case_id=${c.case_id || state.currentCaseId}`;
 
-        const alertMessagePlain = `⚡ Contract Advocate Alert: Payment for ${clientName} (${contractTitle}, ${feeAmount}) is now ${state.simulatedDays} days overdue. Our AI Agent has prepared an escalated follow-up (${toneDesc}).\n\n👉 Review & copy message: ${deepLink}`;
+        const alertMessagePlain = `⚡ Contract Advocate Alert: Payment for ${clientName} (${contractTitle}, ${feeAmount}) is now ${state.simulatedDays} days overdue. Our Bedrock agent has prepared an escalated follow-up (${toneDesc}).\n\n👉 Review & copy message: ${deepLink}`;
         state.currentAlertText = alertMessagePlain;
 
         bubble.innerHTML = `⚡ <strong>Contract Advocate Alert</strong>: Payment for <strong>${clientName}</strong> (${feeAmount}) is now <strong>${state.simulatedDays} days overdue</strong>. Our AI Agent on AWS Bedrock has autonomously prepared a <strong>${toneDesc}</strong>.<br/><br/>👉 <a href="javascript:void(0)" onclick="switchView('assistantView')" style="color: var(--primary); font-weight:700;">Click here to review & copy follow-up draft &rarr;</a>`;
 
         // Update WhatsApp Send Link
-        const phoneClean = (state.userPhone || "+6591234567").replace(/[^0-9]/g, "");
-        const waUrl = `https://api.whatsapp.com/send?phone=${phoneClean}&text=${encodeURIComponent(alertMessagePlain)}`;
+        const phoneClean = (state.userPhone || "").replace(/[^0-9]/g, "");
+        const waUrl = phoneClean 
+          ? `https://api.whatsapp.com/send?phone=${phoneClean}&text=${encodeURIComponent(alertMessagePlain)}`
+          : `https://api.whatsapp.com/send?text=${encodeURIComponent(alertMessagePlain)}`;
         $("#sendWhatsAppBtn").href = waUrl;
 
         // Update Email Send Link
-        const emailTo = state.userEmail || "jordan.freelance@gmail.com";
+        const emailTo = state.userEmail || "";
         const emailSubject = encodeURIComponent(`[Contract Advocate] Payment Overdue Alert: ${clientName}`);
         const emailBody = encodeURIComponent(alertMessagePlain);
-        $("#sendEmailBtn").href = `mailto:${emailTo}?subject=${emailSubject}&body=${emailBody}`;
+        $("#sendEmailBtn").href = emailTo 
+          ? `mailto:${emailTo}?subject=${emailSubject}&body=${emailBody}`
+          : `mailto:?subject=${emailSubject}&body=${emailBody}`;
 
         card.style.display = "flex";
       }
 
-      // Local fallback simulation
-      function simulateLocalEscalation(days) {
-        if (!state.caseData) return;
-        const currentStage = Number(state.caseData.escalation_stage || 0);
-        const nextStage = Math.min(currentStage + 1, 3);
-        state.caseData.escalation_stage = nextStage;
-        state.caseData.status = nextStage === 1 ? "REMINDER_SENT" : `ESCALATED_${nextStage - 1}`;
-        
-        let sampleContent = "";
-        if (nextStage === 1) {
-          sampleContent = "Hi Maya,\n\nI hope you're having a good week. Just following up on our marketing website agreement (Invoice #044 for $3,000 SGD), which was due on September 10, 2026.\n\nCould you please let me know once the transfer has been initiated? Let me know if you need anything resent.\n\nBest regards,\nJordan Lee";
-        } else if (nextStage === 2) {
-          sampleContent = "Hi Maya,\n\nI am writing to follow up on my previous message regarding the outstanding payment of $3,000 SGD for the completed marketing website, which was due on September 10, 2026 (now 14 days overdue).\n\nPlease let me know when payment will be processed this week.\n\nSincerely,\nJordan Lee";
-        } else {
-          sampleContent = "URGENT / FINAL NOTICE:\n\nDear Maya & Acme Consulting Team,\n\nDespite multiple reminders, the payment of $3,000 SGD for deliverable services completed under our contract dated August 15, 2026 remains unpaid (28+ days overdue).\n\nAs outlined in Section 4 of our Agreement, all intellectual property remains with the contractor until payment is received in full. If payment is not settled within 5 business days, I will be forced to escalate this matter to the Small Claims Tribunal and enforce copyright protections.\n\nSincerely,\nJordan Lee";
-        }
-
-        state.caseData.message_history = state.caseData.message_history || [];
-        state.caseData.message_history.push({
-          date: new Date().toISOString().split("T")[0],
-          type: `escalation_stage_${nextStage - 1}`,
-          content: sampleContent
-        });
-
-        updateContractStatus(state.currentCaseId, state.caseData.status);
-        renderCase(state.caseData);
-        dispatchLiveNotification(state.caseData, days);
-        toast(`Simulated +${days} days (Stage ${nextStage})`);
-        switchView("trackerView");
-      }
-
-      // Render Portfolio Table & Stats
+      // Render Portfolio Table & Stats strictly from live data
       function renderPortfolio() {
         const countEl = $("#sidebarCount");
         const pCountEl = $("#portfolioActiveCount");
@@ -1849,22 +1802,30 @@
         let totalVal = 0;
         let overdueCount = 0;
 
+        if (state.contractsList.length === 0) {
+          selectEl.innerHTML = '<option value="">No contracts loaded</option>';
+          pTable.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 28px; color: var(--muted);">No contracts uploaded yet. <a href="javascript:void(0)" onclick="switchView(\'uploadView\')" style="color: var(--primary); font-weight: 700;">Upload a contract</a> to start tracking with AWS Bedrock.</td></tr>';
+          $("#portfolioTotalValue").textContent = "$0 SGD";
+          $("#portfolioOverdueCount").textContent = "0";
+          return;
+        }
+
         selectEl.innerHTML = state.contractsList.map((c) => {
-          return `<option value="${c.case_id}" ${c.case_id === state.currentCaseId ? "selected" : ""}>${c.client_name} ($${(c.amount || 0).toLocaleString()})</option>`;
+          return `<option value="${c.case_id}" ${c.case_id === state.currentCaseId ? "selected" : ""}>${c.client_name} (${formatCurrency(c.amount)})</option>`;
         }).join("");
 
         pTable.innerHTML = state.contractsList.map((c) => {
           totalVal += parseAmount(c.amount);
           if (c.status !== "RESOLVED") overdueCount++;
-          const statusBadge = c.status.includes("ESCALATED") ? "status-escalated" :
-                              c.status === "REMINDED" || c.status === "REMINDER_SENT" ? "status-reminder" :
+          const statusBadge = (c.status || "").includes("ESCALATED") ? "status-escalated" :
+                              (c.status === "REMINDED" || c.status === "REMINDER_SENT") ? "status-reminder" :
                               c.status === "AWAITING_PAYMENT" ? "status-awaiting" : "status-extracted";
           return `
             <tr>
-              <td><strong>${c.client_name}</strong><div style="font-size: 11px; color: var(--muted);">${c.title}</div></td>
+              <td><strong>${c.client_name}</strong><div style="font-size: 11px; color: var(--muted);">${c.title || "Agreement"}</div></td>
               <td><strong>${formatCurrency(c.amount)}</strong></td>
               <td class="mono">${formatDate(c.due_date)}</td>
-              <td><span class="status-badge ${statusBadge}">${c.status}</span></td>
+              <td><span class="status-badge ${statusBadge}">${c.status || "EXTRACTED"}</span></td>
               <td style="font-size: 11px; color: var(--muted);">${formatDate(c.updated_at)}</td>
               <td>
                 <button class="btn btn-secondary btn-sm" onclick="openCase('${c.case_id}', 'trackerView')">Open Tracker</button>
@@ -1882,7 +1843,7 @@
         switchView(targetView);
       };
 
-      // Render Case into UI
+      // Render Case into UI purely from AWS data
       function renderCase(c) {
         if (!c) return;
 
@@ -1900,7 +1861,7 @@
             if (o.date) paymentDueDate = formatDate(o.date);
           }
         });
-        $("#reviewTotalPay").textContent = totalAmt > 0 ? `$${totalAmt.toLocaleString()} SGD` : "$3,000 SGD";
+        $("#reviewTotalPay").textContent = totalAmt > 0 ? `$${totalAmt.toLocaleString()} SGD` : "$0 SGD";
         $("#reviewDueDate").textContent = `Due Date: ${paymentDueDate}`;
 
         // Render Flagged Clauses
@@ -1919,7 +1880,7 @@
             `;
           }).join("");
         } else {
-          clausesBox.innerHTML = '<p style="color: var(--muted);">No risky clauses flagged.</p>';
+          clausesBox.innerHTML = '<p style="color: var(--muted);">No risky clauses flagged by AWS Bedrock.</p>';
         }
 
         // Render Obligations for Review
@@ -1929,12 +1890,12 @@
             const typeChip = o.type === "payment_due" ? "chip-payment" :
                              o.type === "deliverable_due" ? "chip-deliverable" :
                              o.type === "renewal_notice" ? "chip-renewal" : "chip-termination";
-            const rawAmt = o.amount || (o.type === "payment_due" ? "3000" : "-");
+            const rawAmt = o.amount || "";
             return `
               <tr>
                 <td><span class="chip ${typeChip}">${(o.type || "").replace("_", " ")}</span></td>
                 <td><input type="date" class="table-input date-input" value="${o.date || ""}" /></td>
-                <td><input type="text" class="table-input amt-input" value="${rawAmt}" /></td>
+                <td><input type="text" class="table-input amt-input" value="${rawAmt}" placeholder="-" /></td>
                 <td><strong>${o.party_responsible || "client"}</strong></td>
                 <td><span style="font-size: 12px; color: var(--ink-light);">${o.description || ""}</span></td>
               </tr>
@@ -1945,9 +1906,9 @@
         }
 
         // Tracker View
-        $("#trackerStatus").textContent = c.status || "AWAITING_PAYMENT";
+        $("#trackerStatus").textContent = c.status || "IDLE";
         $("#trackerEscalationSub").textContent = `Escalation Stage: ${c.escalation_stage || 0}`;
-        $("#trackerTotal").textContent = totalAmt > 0 ? `$${totalAmt.toLocaleString()} SGD` : "$3,000 SGD";
+        $("#trackerTotal").textContent = totalAmt > 0 ? `$${totalAmt.toLocaleString()} SGD` : "$0 SGD";
         $("#trackerNextDate").textContent = paymentDueDate;
         $("#trackerDaysOverdue").textContent = state.simulatedDays > 0 ? `${state.simulatedDays} days elapsed` : "On schedule";
         $("#trackerMessageCount").textContent = (c.message_history || []).length;
@@ -1971,6 +1932,8 @@
               </tr>
             `;
           }).join("");
+        } else {
+          trackerBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--muted);">No active obligations.</td></tr>';
         }
 
         // Follow-Up Assistant Draft View
@@ -1979,7 +1942,7 @@
           $("#draftMessage").value = lastMsg.content || "";
           $("#draftStageBadge").textContent = (lastMsg.type || "Draft").toUpperCase();
         } else {
-          $("#draftMessage").value = "No follow-up draft needed yet. Payment obligation is currently awaiting due date.";
+          $("#draftMessage").value = "";
           $("#draftStageBadge").textContent = "STAGE 0: ON SCHEDULE";
         }
 
@@ -1987,11 +1950,11 @@
         $("#directDeepLinkUrl").textContent = deepLink;
       }
 
-      // Render Event Timeline
+      // Render Event Timeline from AWS DynamoDB
       function renderTimeline(events) {
         const container = $("#timelineContainer");
         if (!events || !events.length) {
-          container.innerHTML = '<p style="color: var(--muted);">No events recorded yet.</p>';
+          container.innerHTML = '<p style="color: var(--muted);">No timeline events recorded yet in AWS DynamoDB.</p>';
           return;
         }
 
@@ -2105,7 +2068,7 @@
         if (state.currentCaseId) {
           fetchCaseDetails(state.currentCaseId);
           fetchTimeline(state.currentCaseId);
-          toast("Case refreshed");
+          toast("Case refreshed from AWS");
         }
       };
 
