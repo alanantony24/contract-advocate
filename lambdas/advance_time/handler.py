@@ -8,34 +8,42 @@ from common import state_machine
 
 
 def lambda_handler(event, context):
-    """DEMO/DEBUG ONLY. Not a real product feature - lets us show the
-    escalation flow in a 5-minute video without waiting for real days to pass.
-    Expects: {"days": 20}"""
+    """DEMO/DEBUG ONLY. Simulates `days` passing to evaluate escalation state."""
     request_context = event.get("requestContext", {})
     http_context = request_context.get("http", {})
     http_method = event.get("httpMethod") or http_context.get("method")
     if http_method == "OPTIONS":
         return _response(200, {"ok": True})
 
-    body = {}
-    raw_body = event.get("body")
-    if raw_body:
-        try:
-            body = json.loads(raw_body)
-        except Exception:
-            body = {}
-
-    case_id = _get_case_id(event, body)
-    days = body.get("days", 1)
-
-    if not case_id:
-        return _response(400, {"error": "case_id is required"})
-
     try:
+        body = {}
+        raw_body = event.get("body")
+        if raw_body:
+            try:
+                body = json.loads(raw_body)
+            except Exception:
+                body = {}
+
+        qs = event.get("queryStringParameters") or {}
+        case_id = _get_case_id(event, body)
+        days = body.get("days") or qs.get("days") or 1
+        if isinstance(days, str):
+            try:
+                days = int(days)
+            except Exception:
+                days = 1
+
+        if not case_id:
+            return _response(400, {"error": "case_id is required"})
+
         updated_case = state_machine.advance_time(case_id, days)
         return _response(200, updated_case)
     except ValueError as e:
         return _response(404, {"error": str(e)})
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return _response(500, {"error": str(e)})
 
 
 def _get_case_id(event, body):
