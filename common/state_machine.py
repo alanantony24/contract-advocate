@@ -6,6 +6,15 @@ ESCALATION_CAP = 3  # hard cap regardless of what the model "wants" - never loop
 DAYS_BETWEEN_ESCALATIONS = 7  # tune as needed; short for easier demoing
 
 
+def _parse_date(d_val):
+    if not d_val:
+        return None
+    try:
+        return date.fromisoformat(str(d_val).split("T")[0])
+    except Exception:
+        return None
+
+
 def process_case(case: dict, today: date = None) -> dict:
     """Looks at a single case's obligations and decides what, if anything,
     should happen today. This is the core 'plans, acts, adapts over time'
@@ -16,7 +25,7 @@ def process_case(case: dict, today: date = None) -> dict:
     """
     today = today or date.today()
     case_id = case["case_id"]
-    escalation_stage = case.get("escalation_stage", 0)
+    escalation_stage = int(case.get("escalation_stage", 0) or 0)
     message_history = list(case.get("message_history", []))
     obligations = case.get("obligations", [])
     action_taken = None
@@ -26,15 +35,16 @@ def process_case(case: dict, today: date = None) -> dict:
             continue  # only payment obligations get the chase/escalate treatment for now
         if obligation.get("status") == "RESOLVED":
             continue
-        if not obligation.get("date"):
+        
+        due_date = _parse_date(obligation.get("date"))
+        if not due_date:
             continue
 
-        due_date = date.fromisoformat(obligation["date"])
         days_overdue = (today - due_date).days
         if days_overdue < 0:
             continue  # not due yet, nothing to do
 
-        last_action = date.fromisoformat(case.get("last_action_date", today.isoformat()))
+        last_action = _parse_date(case.get("last_action_date")) or today
         days_since_last_action = (today - last_action).days
 
         should_act = (
