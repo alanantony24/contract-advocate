@@ -37,28 +37,32 @@ def process_case(case: dict, today: date = None) -> dict:
             continue
         
         due_date = _parse_date(obligation.get("date"))
-        if not due_date:
-            continue
+        if due_date:
+            days_overdue = (today - due_date).days
+            if days_overdue < 0:
+                continue  # not due yet, nothing to do
 
-        days_overdue = (today - due_date).days
-        if days_overdue < 0:
-            continue  # not due yet, nothing to do
-
-        last_action = _parse_date(case.get("last_action_date")) or today
-        days_since_last_action = (today - last_action).days
+        last_action = _parse_date(case.get("last_action_date"))
+        days_since_last_action = (today - last_action).days if last_action else 999
 
         should_act = (
             (escalation_stage == 0) or
-            (escalation_stage > 0 and days_since_last_action >= DAYS_BETWEEN_ESCALATIONS)
+            (escalation_stage > 0 and (days_since_last_action >= 1 or not last_action or today > last_action))
         )
 
         if should_act and escalation_stage <= ESCALATION_CAP:
             message_text = bedrock_client.draft_followup_message(
                 obligation, escalation_stage, message_history
             )
+            stage_label = "Stage 0 (Polite Reminder)" if escalation_stage == 0 else (
+                "Stage 1 (Firm Follow-Up)" if escalation_stage == 1 else (
+                    "Stage 2 (Small-Claims Final Notice)" if escalation_stage == 2 else "Stage 3 (Legal Demand)"
+                )
+            )
             message_history.append({
                 "date": today.isoformat(),
                 "type": f"escalation_stage_{escalation_stage}",
+                "stage_label": stage_label,
                 "content": message_text,
             })
             
@@ -66,10 +70,10 @@ def process_case(case: dict, today: date = None) -> dict:
             notifier.send_overdue_alert(case, obligation, escalation_stage, message_text)
 
             escalation_stage += 1
-            obligation["status"] = "REMINDED" if escalation_stage == 1 else "ESCALATED"
+            obligation["status"] = "REMINDED" if escalation_stage == 1 else ("ESCALATED" if escalation_stage < 3 else "FINAL_NOTICE")
             action_taken = message_text
 
-    new_status = case["status"]
+    new_status = case.get("status", "AWAITING_PAYMENT")
     if action_taken:
         new_status = "REMINDER_SENT" if escalation_stage == 1 else f"ESCALATED_{escalation_stage - 1}"
 
@@ -92,7 +96,14 @@ def advance_time(case_id: str, days: int) -> dict:
     case = dynamo.get_case(case_id)
     if not case:
         raise ValueError(f"Case {case_id} not found")
-    simulated_today = date.today() + timedelta(days=days)
+
+    # Start advancing from last action date if already simulated into the future, else from today
+    last_action = _parse_date(case.get("last_action_date"))
+    base_date = date.today()
+    if last_action and last_action >= base_date:
+        base_date = last_action
+
+    simulated_today = base_date + timedelta(days=max(1, days))
     return process_case(case, today=simulated_today)
 
 

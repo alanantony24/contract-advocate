@@ -1346,9 +1346,13 @@
             <div class="card">
               <div class="card-header">
                 <div class="card-title">Generated Follow-Up Draft</div>
-                <span class="status-badge status-reminder" id="draftStageBadge">Stage 0: Friendly</span>
+                <span class="status-badge status-reminder" id="draftStageBadge">Stage 0: Polite Reminder</span>
               </div>
               <div class="card-body">
+                <!-- Stage selector pills -->
+                <div id="draftStageSelector" style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+                  <!-- Dynamic stage buttons injected here -->
+                </div>
                 <div class="draft-box">
                   <div class="draft-field">
                     <label>Recipient Client</label>
@@ -1359,8 +1363,8 @@
                     <input type="text" id="draftSubject" placeholder="Follow-up regarding invoice payment" />
                   </div>
                   <div class="draft-field">
-                    <label>Message Content</label>
-                    <textarea id="draftMessage" placeholder="No message draft has been generated yet. Advance time or run daily check on AWS to generate follow-up."></textarea>
+                    <label>Message Content (AWS Bedrock Autonomously Drafted)</label>
+                    <textarea id="draftMessage" rows="8" placeholder="No message draft has been generated yet. Advance time or run daily check on AWS to generate follow-up."></textarea>
                   </div>
                 </div>
               </div>
@@ -1937,14 +1941,47 @@
         }
 
         // Follow-Up Assistant Draft View
+        const activeContract = state.contractsList.find((item) => item.case_id === state.currentCaseId);
+        const clientName = activeContract ? activeContract.client_name : (c.obligations && c.obligations[0]?.party_responsible || "Client");
+        const clientEmail = activeContract ? (activeContract.client_email || `${clientName.toLowerCase().replace(/[^a-z0-9]/g, "")}@example.com`) : "client@example.com";
+        $("#draftTo").value = clientEmail;
+
+        const stageSelector = $("#draftStageSelector");
         if (c.message_history && c.message_history.length) {
+          stageSelector.innerHTML = c.message_history.map((msg, idx) => {
+            const isLast = idx === c.message_history.length - 1;
+            const stageName = msg.stage_label || (msg.type || `Stage ${idx}`).replace(/_/g, " ").toUpperCase();
+            return `<button class="btn btn-sm ${isLast ? 'btn-primary' : 'btn-secondary'}" onclick="selectDraftStage(${idx})">${stageName}</button>`;
+          }).join("");
+
           const lastMsg = c.message_history[c.message_history.length - 1];
           $("#draftMessage").value = lastMsg.content || "";
-          $("#draftStageBadge").textContent = (lastMsg.type || "Draft").toUpperCase();
+          $("#draftStageBadge").textContent = (lastMsg.stage_label || lastMsg.type || "Draft").toUpperCase();
+          const subjects = [
+            `Polite reminder: Invoice payment due for ${clientName}`,
+            `Urgent: Outstanding payment follow-up for ${clientName}`,
+            `Formal Notice: Final demand for overdue payment (${clientName})`,
+            `Legal Notice: Small Claims Tribunal pre-action demand`
+          ];
+          $("#draftSubject").value = subjects[c.message_history.length - 1] || `Overdue Payment Notice: ${clientName}`;
         } else {
+          stageSelector.innerHTML = '<span style="font-size: 12px; color: var(--muted);">No drafts generated yet. Click any <strong>Simulate Due Date (+Xd)</strong> button above to trigger AWS Bedrock.</span>';
           $("#draftMessage").value = "";
+          $("#draftSubject").value = `Invoice payment inquiry: ${clientName}`;
           $("#draftStageBadge").textContent = "STAGE 0: ON SCHEDULE";
         }
+
+        window.selectDraftStage = (idx) => {
+          if (!state.caseData || !state.caseData.message_history) return;
+          const msg = state.caseData.message_history[idx];
+          if (!msg) return;
+          $("#draftMessage").value = msg.content || "";
+          $("#draftStageBadge").textContent = (msg.stage_label || msg.type || `Stage ${idx}`).toUpperCase();
+          $$("#draftStageSelector button").forEach((b, i) => {
+            b.classList.toggle("btn-primary", i === idx);
+            b.classList.toggle("btn-secondary", i !== idx);
+          });
+        };
 
         const deepLink = `${window.location.origin}${window.location.pathname}?case_id=${c.case_id || state.currentCaseId}`;
         $("#directDeepLinkUrl").textContent = deepLink;
