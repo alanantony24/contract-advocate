@@ -1519,11 +1519,9 @@
           url = `${url}${sep}case_id=${encodeURIComponent(caseId)}`;
         }
 
-        const options = {
-          method,
-          headers: { "Content-Type": "text/plain" }
-        };
+        const options = { method };
         if (body) {
+          options.headers = { "Content-Type": "text/plain" };
           options.body = JSON.stringify(body);
         }
 
