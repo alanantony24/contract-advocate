@@ -1,6 +1,6 @@
 from datetime import date, timedelta
 
-from . import dynamo, bedrock_client
+from . import dynamo, bedrock_client, notifier
 
 ESCALATION_CAP = 3  # hard cap regardless of what the model "wants" - never loop forever
 DAYS_BETWEEN_ESCALATIONS = 7  # tune as needed; short for easier demoing
@@ -51,6 +51,10 @@ def process_case(case: dict, today: date = None) -> dict:
                 "type": f"escalation_stage_{escalation_stage}",
                 "content": message_text,
             })
+            
+            # Send notification alert to freelancer with deep-link
+            notifier.send_overdue_alert(case, obligation, escalation_stage, message_text)
+
             escalation_stage += 1
             obligation["status"] = "REMINDED" if escalation_stage == 1 else "ESCALATED"
             action_taken = message_text

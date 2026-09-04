@@ -38,6 +38,9 @@
         --purple-bg: #faf5ff;
         --purple-text: #7e22ce;
         --purple-border: #e9d5ff;
+        --whatsapp-bg: #f0fdf4;
+        --whatsapp-text: #166534;
+        --whatsapp-border: #86efac;
         --radius-lg: 16px;
         --radius-md: 10px;
         --radius-sm: 6px;
@@ -70,8 +73,8 @@
       /* App Layout */
       .layout {
         display: grid;
-        grid-template-columns: 240px 1fr;
-        min-height: calc(100vh - 42px);
+        grid-template-columns: 250px 1fr;
+        min-height: 100vh;
       }
 
       /* Sidebar */
@@ -81,7 +84,7 @@
         padding: 24px 16px;
         display: flex;
         flex-direction: column;
-        gap: 28px;
+        gap: 24px;
       }
 
       .brand {
@@ -162,7 +165,26 @@
         border-top: 1px solid var(--line);
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 10px;
+      }
+
+      .contract-selector-label {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .contract-select {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        font-size: 12px;
+        font-family: inherit;
+        background: var(--bg);
+        color: var(--ink);
+        font-weight: 600;
       }
 
       .case-pill {
@@ -236,6 +258,68 @@
       .header-actions {
         display: flex;
         gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      /* Simulation Toolbar */
+      .sim-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #ffffff;
+        padding: 6px 10px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .sim-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .sim-input {
+        width: 60px;
+        padding: 5px 8px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        text-align: center;
+        font-size: 13px;
+        font-weight: 700;
+        font-family: inherit;
+        color: var(--ink);
+      }
+
+      .sim-input:focus {
+        border-color: var(--primary);
+        outline: none;
+      }
+
+      .sim-presets {
+        display: flex;
+        gap: 4px;
+      }
+
+      .preset-chip {
+        padding: 4px 8px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--line);
+        background: var(--bg);
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--ink-light);
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+
+      .preset-chip:hover, .preset-chip.active {
+        background: var(--primary-light);
+        border-color: var(--primary-border);
+        color: var(--primary);
       }
 
       /* Buttons */
@@ -278,21 +362,27 @@
         color: var(--ink);
       }
 
-      .btn-danger {
-        background: var(--high-risk-bg);
-        color: var(--high-risk-text);
-        border-color: var(--high-risk-border);
+      .btn-whatsapp {
+        background: #25d366;
+        color: white;
+      }
+
+      .btn-whatsapp:hover {
+        background: #1ebc59;
+      }
+
+      .btn-email {
+        background: #2563eb;
+        color: white;
+      }
+
+      .btn-email:hover {
+        background: #1d4ed8;
       }
 
       .btn-sm {
-        padding: 5px 10px;
-        font-size: 11px;
-      }
-
-      .btn-lg {
-        padding: 12px 24px;
-        font-size: 15px;
-        border-radius: var(--radius-md);
+        padding: 6px 12px;
+        font-size: 12px;
       }
 
       /* Status Badge */
@@ -322,7 +412,7 @@
       .status-escalated { background: var(--high-risk-bg); color: var(--high-risk-text); }
       .status-resolved { background: var(--low-risk-bg); color: var(--low-risk-text); }
 
-      /* Upload Hero Card */
+      /* Hero Card */
       .hero-card {
         background: linear-gradient(135deg, #f55414 0%, #ea580c 60%, #c2410c 100%);
         border-radius: var(--radius-lg);
@@ -362,10 +452,10 @@
 
       /* Drop Zone */
       .dropzone {
-        background: #ffffff;
+        background: var(--primary-light);
         border: 2px dashed var(--primary-border);
         border-radius: var(--radius-lg);
-        padding: 44px 24px;
+        padding: 48px 24px;
         text-align: center;
         transition: all 0.2s ease;
         cursor: pointer;
@@ -374,7 +464,6 @@
         align-items: center;
         justify-content: center;
         gap: 12px;
-        background-color: var(--primary-light);
       }
 
       .dropzone:hover, .dropzone.dragover {
@@ -403,15 +492,6 @@
       .dropzone p {
         color: var(--muted);
         font-size: 12px;
-      }
-
-      .quick-sample-box {
-        margin-top: 16px;
-        padding-top: 16px;
-        border-top: 1px dashed rgba(245, 84, 20, 0.3);
-        display: flex;
-        align-items: center;
-        gap: 10px;
       }
 
       /* Stats Overview Row */
@@ -512,17 +592,9 @@
         box-shadow: var(--shadow-sm);
       }
 
-      .clause-card.high {
-        border-left: 4px solid #ef4444;
-      }
-
-      .clause-card.medium {
-        border-left: 4px solid #f59e0b;
-      }
-
-      .clause-card.low {
-        border-left: 4px solid #3b82f6;
-      }
+      .clause-card.high { border-left: 4px solid #ef4444; }
+      .clause-card.medium { border-left: 4px solid #f59e0b; }
+      .clause-card.low { border-left: 4px solid #3b82f6; }
 
       .clause-top {
         display: flex;
@@ -599,7 +671,7 @@
         box-shadow: 0 0 0 2px rgba(245, 84, 20, 0.15);
       }
 
-      /* Tag / Chip */
+      /* Chips */
       .chip {
         display: inline-flex;
         align-items: center;
@@ -681,6 +753,97 @@
         gap: 4px;
       }
 
+      /* Multi-Channel Notification Hub */
+      .notification-hub-card {
+        background: #ffffff;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        padding: 20px;
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .hub-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .hub-header h4 {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ink);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .contact-settings-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        background: var(--bg);
+        padding: 12px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--line);
+      }
+
+      .contact-field label {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--muted);
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .contact-field input {
+        width: 100%;
+        padding: 6px 10px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        font-size: 12px;
+        font-family: inherit;
+        background: #ffffff;
+      }
+
+      .outbound-alert-box {
+        background: var(--whatsapp-bg);
+        border: 1px solid var(--whatsapp-border);
+        border-radius: var(--radius-sm);
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .outbound-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--whatsapp-text);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .outbound-bubble {
+        background: #ffffff;
+        border: 1px solid var(--whatsapp-border);
+        border-radius: var(--radius-sm);
+        padding: 12px;
+        font-size: 12px;
+        line-height: 1.55;
+        color: var(--ink);
+      }
+
+      .outbound-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
       /* Vertical Timeline */
       .timeline-flow {
         position: relative;
@@ -700,9 +863,7 @@
         background: var(--line);
       }
 
-      .timeline-node {
-        position: relative;
-      }
+      .timeline-node { position: relative; }
 
       .timeline-dot {
         position: absolute;
@@ -716,13 +877,8 @@
         box-shadow: var(--shadow-sm);
       }
 
-      .timeline-dot.escalated {
-        border-color: #ef4444;
-      }
-
-      .timeline-dot.confirmed {
-        border-color: #10b981;
-      }
+      .timeline-dot.escalated { border-color: #ef4444; }
+      .timeline-dot.confirmed { border-color: #10b981; }
 
       .timeline-header {
         display: flex;
@@ -769,9 +925,7 @@
         place-items: center;
       }
 
-      .loading-overlay.active {
-        display: grid;
-      }
+      .loading-overlay.active { display: grid; }
 
       .loading-card {
         background: #ffffff;
@@ -796,9 +950,7 @@
         animation: spin 0.8s linear infinite;
       }
 
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
+      @keyframes spin { to { transform: rotate(360deg); } }
 
       /* Toast Notification */
       .toast {
@@ -828,21 +980,12 @@
 
       /* Responsive */
       @media (max-width: 900px) {
-        .layout {
-          grid-template-columns: 1fr;
-        }
-        .sidebar {
-          display: none;
-        }
-        .main-container {
-          padding: 20px 16px 40px;
-        }
-        .stats-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .assistant-grid {
-          grid-template-columns: 1fr;
-        }
+        .layout { grid-template-columns: 1fr; }
+        .sidebar { display: none; }
+        .main-container { padding: 20px 16px 40px; }
+        .stats-grid { grid-template-columns: 1fr 1fr; }
+        .assistant-grid { grid-template-columns: 1fr; }
+        .contact-settings-row { grid-template-columns: 1fr; }
       }
     </style>
   </head>
@@ -856,10 +999,14 @@
         </div>
 
         <nav class="nav-group">
-          <div class="nav-label">Main Flow</div>
+          <div class="nav-label">Main Navigation</div>
           <button class="nav-item active" data-view="uploadView">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
             Upload Contract
+          </button>
+          <button class="nav-item" data-view="portfolioView">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            My Contracts (<span id="sidebarCount">3</span>)
           </button>
           <button class="nav-item" data-view="reviewView">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -880,12 +1027,12 @@
         </nav>
 
         <div class="sidebar-footer">
+          <div class="contract-selector-label">Active Contract Switcher</div>
+          <select id="activeContractSelect" class="contract-select">
+            <option value="">No contracts loaded</option>
+          </select>
           <div class="case-pill">
-            <div class="case-pill-title">Active Case ID</div>
-            <div class="case-pill-id mono" id="sideCaseId">None loaded</div>
-          </div>
-          <div class="case-pill">
-            <div class="case-pill-title">Case Status</div>
+            <div class="case-pill-title">Active Case Status</div>
             <div class="case-pill-id" id="sideCaseStatus">Idle</div>
           </div>
         </div>
@@ -898,14 +1045,17 @@
           <div class="page-header">
             <div class="page-title">
               <h1>Upload Freelance Contract</h1>
-              <p>Upload a contract PDF. Claude on AWS Bedrock will extract risky clauses and date-bound obligations.</p>
+              <p>Upload any freelance PDF agreement. Amazon Bedrock extracts risky clauses and date-bound obligations.</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn btn-secondary btn-sm" id="viewPortfolioBtn">📁 View All Contracts</button>
             </div>
           </div>
 
           <div class="hero-card">
             <h2>Long-Horizon Contract Protection</h2>
             <p>
-              Unlike one-off chatbots, Contract Advocate plans, tracks deadlines, and autonomously adapts over time—drafting escalating follow-up messages if obligations are missed.
+              Unlike one-off chatbots, Contract Advocate plans, tracks deadlines across all your clients, and autonomously dispatches WhatsApp & Email alerts when obligations are missed.
             </p>
           </div>
 
@@ -920,7 +1070,66 @@
           </div>
         </section>
 
-        <!-- 2. REVIEW & CONFIRM VIEW -->
+        <!-- 2. CONTRACTS PORTFOLIO VIEW -->
+        <section class="view-panel" id="portfolioView">
+          <div class="page-header">
+            <div class="page-title">
+              <h1>Freelancer Contracts Portfolio</h1>
+              <p>All active agreements, payment tracking status, and overdue alerts across your clients.</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn btn-primary" id="portfolioUploadBtn">+ Add New Contract</button>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card highlight">
+              <span class="stat-label">Total Contract Value</span>
+              <span class="stat-value" id="portfolioTotalValue">$10,200 SGD</span>
+              <span class="stat-sub">Across all tracked clients</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Active Agreements</span>
+              <span class="stat-value" id="portfolioActiveCount">3</span>
+              <span class="stat-sub">Monitored by agent</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Pending / Overdue</span>
+              <span class="stat-value" id="portfolioOverdueCount">3</span>
+              <span class="stat-sub">Awaiting client payment</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Alert Channels</span>
+              <span class="stat-value" style="font-size: 18px; color: #166534;">WhatsApp + Email 📱</span>
+              <span class="stat-sub">AWS EventBridge Active</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Tracked Client Agreements</div>
+            </div>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Contract / Client</th>
+                    <th>Fee Value</th>
+                    <th>Next Due Date</th>
+                    <th>Status</th>
+                    <th>Last Activity</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="portfolioTableBody">
+                  <tr><td colspan="6" style="text-align: center; color: var(--muted);">No contracts loaded yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. REVIEW & CONFIRM VIEW -->
         <section class="view-panel" id="reviewView">
           <div class="page-header">
             <div class="page-title">
@@ -999,7 +1208,7 @@
           </div>
         </section>
 
-        <!-- 3. ACTIVE TRACKER VIEW -->
+        <!-- 4. ACTIVE TRACKER VIEW -->
         <section class="view-panel" id="trackerView">
           <div class="page-header">
             <div class="page-title">
@@ -1008,7 +1217,22 @@
             </div>
             <div class="header-actions">
               <button class="btn btn-secondary" id="refreshCaseBtn">Refresh State</button>
-              <button class="btn btn-primary" id="advanceTimeBtn">⏩ Simulate +25 Days (Payment Overdue)</button>
+              <!-- Dynamic Days Simulation Toolbar -->
+              <div class="sim-toolbar">
+                <span class="sim-label">Simulate:</span>
+                <input type="number" id="simDaysInput" value="25" min="1" max="180" class="sim-input" />
+                <span class="sim-label">Days</span>
+                <div class="sim-presets">
+                  <button class="preset-chip" data-days="7">+7d</button>
+                  <button class="preset-chip" data-days="14">+14d</button>
+                  <button class="preset-chip active" data-days="25">+25d</button>
+                  <button class="preset-chip" data-days="40">+40d</button>
+                  <button class="preset-chip" data-days="60">+60d</button>
+                </div>
+                <button class="btn btn-primary btn-sm" id="advanceTimeBtn">
+                  ⏩ Simulate <span id="simBtnDaysLabel">25</span>d Overdue
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1035,7 +1259,54 @@
             </div>
           </div>
 
-          <div class="card">
+          <!-- Notification Hub & Real Alert Dispatcher -->
+          <div class="notification-hub-card">
+            <div class="hub-header">
+              <h4>
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#f55414"><path stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                Freelancer Alert Notification Channels (AWS EventBridge + SNS / SES)
+              </h4>
+              <button class="btn btn-secondary btn-sm" id="saveContactSettingsBtn">💾 Save Contacts</button>
+            </div>
+
+            <div class="contact-settings-row">
+              <div class="contact-field">
+                <label>Registered Freelancer Email (for Payment Alerts)</label>
+                <input type="email" id="freelancerEmailInput" value="jordan.freelance@gmail.com" />
+              </div>
+              <div class="contact-field">
+                <label>Registered WhatsApp / Phone Number</label>
+                <input type="text" id="freelancerPhoneInput" value="+6591234567" />
+              </div>
+            </div>
+
+            <!-- Outgoing Alert Notification Box -->
+            <div class="outbound-alert-box" id="whatsappAlertCard" style="display: none;">
+              <div class="outbound-title">
+                <span>📱 Outgoing AWS Due Date Notification</span>
+                <span class="chip chip-payment" id="alertDeliveryStatus">Dispatched via EventBridge</span>
+              </div>
+              <div class="outbound-bubble" id="whatsappBubbleText">
+                ⚡ <strong>Contract Advocate Alert</strong>: Payment for <strong>Acme Consulting</strong> ($3,000 SGD) is now overdue. Our AI Agent has prepared an escalated follow-up email draft for you.
+              </div>
+              <div class="outbound-actions">
+                <a href="#" target="_blank" class="btn btn-whatsapp btn-sm" id="sendWhatsAppBtn">
+                  📱 Open in WhatsApp
+                </a>
+                <a href="#" class="btn btn-email btn-sm" id="sendEmailBtn">
+                  ✉️ Open in Email Client
+                </a>
+                <button class="btn btn-secondary btn-sm" id="copyAlertTextBtn">
+                  📋 Copy Alert Text
+                </button>
+                <button class="btn btn-primary btn-sm" onclick="switchView('assistantView')">
+                  🚀 View AI Follow-Up Draft &rarr;
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 20px;">
             <div class="card-header">
               <div class="card-title">Active Contract Obligations</div>
             </div>
@@ -1059,7 +1330,7 @@
           </div>
         </section>
 
-        <!-- 4. AI FOLLOW-UP ASSISTANT VIEW -->
+        <!-- 5. AI FOLLOW-UP ASSISTANT VIEW -->
         <section class="view-panel" id="assistantView">
           <div class="page-header">
             <div class="page-title">
@@ -1080,7 +1351,7 @@
               <div class="card-body">
                 <div class="draft-box">
                   <div class="draft-field">
-                    <label>Recipient</label>
+                    <label>Recipient Client</label>
                     <input type="text" id="draftTo" value="client@example.com" />
                   </div>
                   <div class="draft-field">
@@ -1097,7 +1368,7 @@
 
             <div class="card">
               <div class="card-header">
-                <div class="card-title">Escalation Policy & Protocol</div>
+                <div class="card-title">Escalation Policy & Deep-Link Hub</div>
               </div>
               <div class="card-body" style="display: flex; flex-direction: column; gap: 14px;">
                 <div class="tone-callout">
@@ -1112,12 +1383,24 @@
                   <strong>Stage 2: Final Legal Summary (Day 21+)</strong>
                   <span>Final demand for payment before small-claims court or legal recourse. Professional and factual.</span>
                 </div>
+
+                <div class="outbound-alert-box" style="margin-top: 4px;">
+                  <div class="outbound-title">
+                    <span>📱 Deep-Link for Freelancer Notifications</span>
+                  </div>
+                  <div style="font-size: 12px; color: var(--ink);">
+                    This link is automatically sent in the WhatsApp/Email notification:
+                    <div class="mono" id="directDeepLinkUrl" style="word-break: break-all; margin-top: 4px; color: var(--primary); font-size: 11px;">
+                      http://localhost:3000/
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- 5. TIMELINE VIEW -->
+        <!-- 6. TIMELINE VIEW -->
         <section class="view-panel" id="timelineView">
           <div class="page-header">
             <div class="page-title">
@@ -1159,12 +1442,47 @@
         advanceTime: "https://gmyttojs5copjarjx2xxvvgzom0cqdpi.lambda-url.us-east-1.on.aws/"
       };
 
+      // Initial Seed Contracts for Multi-Contract Demo
+      const DEFAULT_CONTRACTS = [
+        {
+          case_id: "71011636-085d-4503-bee6-958cc3547b39",
+          client_name: "Acme Consulting Pte Ltd",
+          title: "Marketing Website Agreement",
+          amount: 3000,
+          due_date: "2026-09-10",
+          status: "AWAITING_PAYMENT",
+          updated_at: "2026-09-03"
+        },
+        {
+          case_id: "orbit-tech-9283-4a11-8932",
+          client_name: "Orbit Media Group",
+          title: "Full-Stack Web App Scope",
+          amount: 5400,
+          due_date: "2026-09-28",
+          status: "AWAITING_PAYMENT",
+          updated_at: "2026-09-01"
+        },
+        {
+          case_id: "nexus-design-1182-5b90-1284",
+          client_name: "Nexus Innovations",
+          title: "UI/UX Redesign Deliverables",
+          amount: 1800,
+          due_date: "2026-10-05",
+          status: "EXTRACTED",
+          updated_at: "2026-08-28"
+        }
+      ];
+
       // State Management
       const state = {
-        currentCaseId: localStorage.getItem("current_case_id") || null,
+        contractsList: JSON.parse(localStorage.getItem("all_cases_list") || JSON.stringify(DEFAULT_CONTRACTS)),
+        currentCaseId: localStorage.getItem("current_case_id") || DEFAULT_CONTRACTS[0].case_id,
+        userEmail: localStorage.getItem("user_email") || "jordan.freelance@gmail.com",
+        userPhone: localStorage.getItem("user_phone") || "+6591234567",
         caseData: null,
         timelineData: [],
-        simulatedDays: 0
+        simulatedDays: 0,
+        currentAlertText: ""
       };
 
       // Utility helpers
@@ -1273,8 +1591,8 @@
       }
 
       // Ingest PDF & Create Case
-      async function uploadContractPdf(base64Data) {
-        showLoading("Analyzing Contract with AI", "Bedrock Claude 3.7 extracting clauses & date-bound obligations...");
+      async function uploadContractPdf(base64Data, filename = "Uploaded Contract") {
+        showLoading("Analyzing Contract with AI", "Bedrock Claude extracting clauses & date-bound obligations...");
         try {
           const res = await apiCall(API.createCase, "POST", {
             user_id: "demo-user",
@@ -1284,6 +1602,20 @@
           if (res && res.case_id) {
             state.currentCaseId = res.case_id;
             localStorage.setItem("current_case_id", res.case_id);
+            
+            // Add to multi-contract list
+            const newContract = {
+              case_id: res.case_id,
+              client_name: filename.replace(".pdf", ""),
+              title: "Freelance Agreement",
+              amount: 3000,
+              due_date: new Date().toISOString().split("T")[0],
+              status: "EXTRACTED",
+              updated_at: new Date().toISOString().split("T")[0]
+            };
+            state.contractsList.unshift(newContract);
+            saveContracts();
+
             toast("Case created: " + res.case_id);
             await fetchCaseDetails(res.case_id);
             switchView("reviewView");
@@ -1296,6 +1628,24 @@
         } finally {
           hideLoading();
         }
+      }
+
+      // Save contracts list to localStorage
+      function saveContracts() {
+        localStorage.setItem("all_cases_list", JSON.stringify(state.contractsList));
+        renderPortfolio();
+      }
+
+      // Switch active contract
+      async function selectContract(caseId) {
+        if (!caseId) return;
+        state.currentCaseId = caseId;
+        localStorage.setItem("current_case_id", caseId);
+        state.simulatedDays = 0;
+        await fetchCaseDetails(caseId);
+        await fetchTimeline(caseId);
+        renderPortfolio();
+        toast("Switched active contract");
       }
 
       // Fetch Full Case Details
@@ -1340,7 +1690,6 @@
       async function confirmCase() {
         if (!state.currentCaseId) return toast("No active case to confirm");
 
-        // Collect potentially edited obligations from table
         const editedObligations = [];
         const rows = $$("#obligationsTableBody tr");
         rows.forEach((row, idx) => {
@@ -1362,16 +1711,17 @@
           }, state.currentCaseId);
 
           toast("Tracking started! Status: AWAITING_PAYMENT");
+          updateContractStatus(state.currentCaseId, "AWAITING_PAYMENT");
           await fetchCaseDetails(state.currentCaseId);
           await fetchTimeline(state.currentCaseId);
           switchView("trackerView");
         } catch (err) {
-          // If backend requires fallback
           if (state.caseData) {
             state.caseData.status = "AWAITING_PAYMENT";
             if (editedObligations.length) state.caseData.obligations = editedObligations;
+            updateContractStatus(state.currentCaseId, "AWAITING_PAYMENT");
             renderCase(state.caseData);
-            toast("Tracking confirmed (local state sync)");
+            toast("Tracking confirmed");
             switchView("trackerView");
           } else {
             toast("Confirm failed: " + err.message);
@@ -1381,39 +1731,81 @@
         }
       }
 
-      // Advance Time Simulation
-      async function advanceTime(days) {
-        if (!state.currentCaseId) {
-          return toast("Please upload and confirm a contract first!");
+      function updateContractStatus(caseId, status) {
+        const item = state.contractsList.find((c) => c.case_id === caseId);
+        if (item) {
+          item.status = status;
+          saveContracts();
         }
+      }
 
-        state.simulatedDays += Number(days);
-        showLoading("Simulating Time Passing", `Advancing +${days} days (Total: ${state.simulatedDays}d)...`);
+      // Advance Time Simulation with dynamic input
+      async function advanceTime(days) {
+        if (!state.currentCaseId) return toast("Please upload and confirm a contract first!");
+
+        const numDays = Number(days) || Number($("#simDaysInput")?.value) || 25;
+        state.simulatedDays += numDays;
+        showLoading("Simulating Time Passing", `Advancing +${numDays} days (Total: ${state.simulatedDays}d)...`);
 
         try {
           const updatedCase = await apiCall(API.advanceTime, "POST", {
             case_id: state.currentCaseId,
-            days: Number(days)
+            days: numDays
           }, state.currentCaseId);
 
           if (updatedCase && updatedCase.case_id) {
             state.caseData = updatedCase;
+            updateContractStatus(state.currentCaseId, updatedCase.status);
             renderCase(updatedCase);
           } else {
             await fetchCaseDetails(state.currentCaseId);
           }
           await fetchTimeline(state.currentCaseId);
-          toast(`Simulated +${days} days! Status: ${state.caseData?.status || "Updated"}`);
-          switchView("assistantView");
+          dispatchLiveNotification(state.caseData, numDays);
+          toast(`Simulated +${numDays} days!`);
+          switchView("trackerView");
         } catch (err) {
-          // Fallback state machine simulation if needed for smooth live demo
-          simulateLocalEscalation(days);
+          simulateLocalEscalation(numDays);
         } finally {
           hideLoading();
         }
       }
 
-      // Local fallback simulation for presentation safety
+      // WhatsApp / Email Multi-Channel Notification Dispatcher
+      function dispatchLiveNotification(c, numDays) {
+        if (!c) return;
+        const card = $("#whatsappAlertCard");
+        const bubble = $("#whatsappBubbleText");
+        
+        const activeContract = state.contractsList.find((item) => item.case_id === state.currentCaseId);
+        const clientName = activeContract ? activeContract.client_name : "Acme Consulting Pte Ltd";
+        const contractTitle = activeContract ? activeContract.title : "Freelance Agreement";
+        const feeAmount = activeContract ? formatCurrency(activeContract.amount) : "$3,000 SGD";
+        
+        const stageNum = c.escalation_stage || 1;
+        const toneDesc = stageNum === 1 ? "polite reminder" : (stageNum === 2 ? "firm follow-up" : "small-claims final notice");
+        const deepLink = `${window.location.origin}${window.location.pathname}?case_id=${c.case_id || state.currentCaseId}`;
+
+        const alertMessagePlain = `⚡ Contract Advocate Alert: Payment for ${clientName} (${contractTitle}, ${feeAmount}) is now ${state.simulatedDays} days overdue. Our AI Agent has prepared an escalated follow-up (${toneDesc}).\n\n👉 Review & copy message: ${deepLink}`;
+        state.currentAlertText = alertMessagePlain;
+
+        bubble.innerHTML = `⚡ <strong>Contract Advocate Alert</strong>: Payment for <strong>${clientName}</strong> (${feeAmount}) is now <strong>${state.simulatedDays} days overdue</strong>. Our AI Agent on AWS Bedrock has autonomously prepared a <strong>${toneDesc}</strong>.<br/><br/>👉 <a href="javascript:void(0)" onclick="switchView('assistantView')" style="color: var(--primary); font-weight:700;">Click here to review & copy follow-up draft &rarr;</a>`;
+
+        // Update WhatsApp Send Link
+        const phoneClean = (state.userPhone || "+6591234567").replace(/[^0-9]/g, "");
+        const waUrl = `https://api.whatsapp.com/send?phone=${phoneClean}&text=${encodeURIComponent(alertMessagePlain)}`;
+        $("#sendWhatsAppBtn").href = waUrl;
+
+        // Update Email Send Link
+        const emailTo = state.userEmail || "jordan.freelance@gmail.com";
+        const emailSubject = encodeURIComponent(`[Contract Advocate] Payment Overdue Alert: ${clientName}`);
+        const emailBody = encodeURIComponent(alertMessagePlain);
+        $("#sendEmailBtn").href = `mailto:${emailTo}?subject=${emailSubject}&body=${emailBody}`;
+
+        card.style.display = "flex";
+      }
+
+      // Local fallback simulation
       function simulateLocalEscalation(days) {
         if (!state.caseData) return;
         const currentStage = Number(state.caseData.escalation_stage || 0);
@@ -1437,25 +1829,68 @@
           content: sampleContent
         });
 
+        updateContractStatus(state.currentCaseId, state.caseData.status);
         renderCase(state.caseData);
+        dispatchLiveNotification(state.caseData, days);
         toast(`Simulated +${days} days (Stage ${nextStage})`);
-        switchView("assistantView");
+        switchView("trackerView");
       }
+
+      // Render Portfolio Table & Stats
+      function renderPortfolio() {
+        const countEl = $("#sidebarCount");
+        const pCountEl = $("#portfolioActiveCount");
+        const pTable = $("#portfolioTableBody");
+        const selectEl = $("#activeContractSelect");
+
+        countEl.textContent = state.contractsList.length;
+        pCountEl.textContent = state.contractsList.length;
+
+        let totalVal = 0;
+        let overdueCount = 0;
+
+        selectEl.innerHTML = state.contractsList.map((c) => {
+          return `<option value="${c.case_id}" ${c.case_id === state.currentCaseId ? "selected" : ""}>${c.client_name} ($${(c.amount || 0).toLocaleString()})</option>`;
+        }).join("");
+
+        pTable.innerHTML = state.contractsList.map((c) => {
+          totalVal += parseAmount(c.amount);
+          if (c.status !== "RESOLVED") overdueCount++;
+          const statusBadge = c.status.includes("ESCALATED") ? "status-escalated" :
+                              c.status === "REMINDED" || c.status === "REMINDER_SENT" ? "status-reminder" :
+                              c.status === "AWAITING_PAYMENT" ? "status-awaiting" : "status-extracted";
+          return `
+            <tr>
+              <td><strong>${c.client_name}</strong><div style="font-size: 11px; color: var(--muted);">${c.title}</div></td>
+              <td><strong>${formatCurrency(c.amount)}</strong></td>
+              <td class="mono">${formatDate(c.due_date)}</td>
+              <td><span class="status-badge ${statusBadge}">${c.status}</span></td>
+              <td style="font-size: 11px; color: var(--muted);">${formatDate(c.updated_at)}</td>
+              <td>
+                <button class="btn btn-secondary btn-sm" onclick="openCase('${c.case_id}', 'trackerView')">Open Tracker</button>
+              </td>
+            </tr>
+          `;
+        }).join("");
+
+        $("#portfolioTotalValue").textContent = `$${totalVal.toLocaleString()} SGD`;
+        $("#portfolioOverdueCount").textContent = overdueCount;
+      }
+
+      window.openCase = (caseId, targetView = "trackerView") => {
+        selectContract(caseId);
+        switchView(targetView);
+      };
 
       // Render Case into UI
       function renderCase(c) {
         if (!c) return;
 
-        // Side badges
-        $("#sideCaseId").textContent = c.case_id ? c.case_id.substring(0, 18) + "..." : "None";
         $("#sideCaseStatus").textContent = c.status || "EXTRACTED";
-
-        // Review View
         $("#reviewStatus").textContent = c.status || "EXTRACTED";
         $("#flaggedCount").textContent = (c.clauses_flagged || []).length;
         $("#obligationCount").textContent = (c.obligations || []).length;
 
-        // Calculate payment total
         let totalAmt = 0;
         let paymentDueDate = "N/A";
         (c.obligations || []).forEach((o) => {
@@ -1547,6 +1982,9 @@
           $("#draftMessage").value = "No follow-up draft needed yet. Payment obligation is currently awaiting due date.";
           $("#draftStageBadge").textContent = "STAGE 0: ON SCHEDULE";
         }
+
+        const deepLink = `${window.location.origin}${window.location.pathname}?case_id=${c.case_id || state.currentCaseId}`;
+        $("#directDeepLinkUrl").textContent = deepLink;
       }
 
       // Render Event Timeline
@@ -1582,6 +2020,46 @@
         btn.onclick = () => switchView(btn.dataset.view);
       });
 
+      $("#viewPortfolioBtn").onclick = () => switchView("portfolioView");
+      $("#portfolioUploadBtn").onclick = () => switchView("uploadView");
+
+      $("#activeContractSelect").onchange = (e) => {
+        selectContract(e.target.value);
+      };
+
+      // Contact Settings Persistence
+      $("#freelancerEmailInput").value = state.userEmail;
+      $("#freelancerPhoneInput").value = state.userPhone;
+
+      $("#saveContactSettingsBtn").onclick = () => {
+        state.userEmail = $("#freelancerEmailInput").value.trim();
+        state.userPhone = $("#freelancerPhoneInput").value.trim();
+        localStorage.setItem("user_email", state.userEmail);
+        localStorage.setItem("user_phone", state.userPhone);
+        toast("Contact preferences saved!");
+      };
+
+      // Simulation Toolbar Logic
+      const simInput = $("#simDaysInput");
+      const simLabel = $("#simBtnDaysLabel");
+
+      if (simInput && simLabel) {
+        simInput.oninput = () => {
+          simLabel.textContent = simInput.value || "25";
+          $$(".preset-chip").forEach((c) => c.classList.remove("active"));
+        };
+      }
+
+      $$(".preset-chip").forEach((chip) => {
+        chip.onclick = () => {
+          $$(".preset-chip").forEach((c) => c.classList.remove("active"));
+          chip.classList.add("active");
+          const days = chip.dataset.days;
+          simInput.value = days;
+          simLabel.textContent = days;
+        };
+      });
+
       // Drag and drop & file upload
       const dropzone = $("#dropzone");
       const fileInput = $("#fileInput");
@@ -1607,7 +2085,7 @@
         const file = e.dataTransfer?.files[0];
         if (file && file.type === "application/pdf") {
           const b64 = await fileToBase64(file);
-          uploadContractPdf(b64);
+          uploadContractPdf(b64, file.name);
         } else {
           toast("Please drop a valid PDF file");
         }
@@ -1617,7 +2095,7 @@
         const file = fileInput.files[0];
         if (file) {
           const b64 = await fileToBase64(file);
-          uploadContractPdf(b64);
+          uploadContractPdf(b64, file.name);
         }
       };
 
@@ -1631,11 +2109,22 @@
         }
       };
 
-      // Advance Time Button (Simulate Days Overdue)
+      // Advance Time Button
       const advBtn = $("#advanceTimeBtn");
       if (advBtn) {
-        advBtn.onclick = () => advanceTime(25);
+        advBtn.onclick = () => {
+          const days = Number(simInput?.value) || 25;
+          advanceTime(days);
+        };
       }
+
+      // Copy Alert message button
+      $("#copyAlertTextBtn").onclick = () => {
+        if (state.currentAlertText) {
+          navigator.clipboard?.writeText(state.currentAlertText);
+          toast("Alert notification copied to clipboard!");
+        }
+      };
 
       // Copy draft message button
       $("#copyDraftBtn").onclick = () => {
@@ -1646,8 +2135,16 @@
         }
       };
 
-      // Initialize on load if existing case
+      // Deep link query param support on load
       window.onload = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlCaseId = urlParams.get("case_id");
+        if (urlCaseId) {
+          state.currentCaseId = urlCaseId;
+          localStorage.setItem("current_case_id", urlCaseId);
+          switchView("trackerView");
+        }
+        renderPortfolio();
         if (state.currentCaseId) {
           fetchCaseDetails(state.currentCaseId);
           fetchTimeline(state.currentCaseId);
