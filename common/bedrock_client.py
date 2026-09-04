@@ -15,13 +15,26 @@ def get_client():
 def ask_bedrock(prompt: str, system: str = "You are a helpful assistant.",
                  max_tokens: int = 1000, temperature: float = 0.0) -> str:
     client = get_client()
-    response = client.converse(
-        modelId=config.BEDROCK_MODEL_ID,
-        messages=[{"role": "user", "content": [{"text": prompt}]}],
-        system=[{"text": system}],
-        inferenceConfig={"temperature": temperature, "maxTokens": max_tokens},
-    )
-    return response["output"]["message"]["content"][0]["text"]
+    model_ids = [
+        config.BEDROCK_MODEL_ID,
+        "us.anthropic.claude-3-5-haiku-20241022-v1:0",
+        "anthropic.claude-3-haiku-20240307-v1:0",
+        "us.anthropic.claude-3-haiku-20240307-v1:0",
+    ]
+    last_err = None
+    for mid in model_ids:
+        try:
+            response = client.converse(
+                modelId=mid,
+                messages=[{"role": "user", "content": [{"text": prompt}]}],
+                system=[{"text": system}],
+                inferenceConfig={"temperature": temperature, "maxTokens": max_tokens},
+            )
+            return response["output"]["message"]["content"][0]["text"]
+        except Exception as e:
+            last_err = e
+            continue
+    raise last_err or RuntimeError("Failed to invoke Bedrock model")
 
 
 EXTRACTION_SYSTEM_PROMPT = """You are a contract analysis assistant. You read freelance/contractor
@@ -118,4 +131,37 @@ def draft_followup_message(obligation: dict, escalation_stage: int, message_hist
         f"Message history so far:\n{history_text}\n\n"
         f"Draft the next follow-up message."
     )
-    return ask_bedrock(prompt, system=MESSAGE_DRAFT_SYSTEM_PROMPT, max_tokens=400, temperature=0.3)
+    try:
+        return ask_bedrock(prompt, system=MESSAGE_DRAFT_SYSTEM_PROMPT, max_tokens=400, temperature=0.3)
+    except Exception as e:
+        # Fallback template if Bedrock is temporarily unavailable
+        client_name = obligation.get("party_responsible", "Client")
+        amount = obligation.get("amount", "3000")
+        due_date = obligation.get("date", "agreed date")
+        desc = obligation.get("description", "Contract Payment")
+        if escalation_stage == 0:
+            return (
+                f"Hi {client_name},\n\n"
+                f"I hope you are doing well. Just a polite reminder regarding the payment for '{desc}' "
+                f"in the amount of ${amount} SGD, which was due on {due_date}.\n\n"
+                f"Please let me know if you need any additional invoice details or confirmation.\n\n"
+                f"Best regards."
+            )
+        elif escalation_stage == 1:
+            return (
+                f"Dear {client_name},\n\n"
+                f"I am writing to follow up on my previous message regarding the outstanding invoice for '{desc}' "
+                f"(${amount} SGD), which was scheduled for payment on {due_date}.\n\n"
+                f"As the invoice is now overdue, could you please provide an update on when payment will be processed?\n\n"
+                f"Thank you for your prompt attention."
+            )
+        else:
+            return (
+                f"Formal Notice: Outstanding Payment of ${amount} SGD for '{desc}'\n\n"
+                f"Dear {client_name},\n\n"
+                f"Despite previous reminders, the invoice due on {due_date} remains unpaid. "
+                f"Please arrange for immediate settlement within 5 business days. If payment is not received, "
+                f"I will have no choice but to escalate this matter through formal dispute resolution channels, "
+                f"including the Small Claims Tribunals.\n\n"
+                f"Sincerely."
+            )
