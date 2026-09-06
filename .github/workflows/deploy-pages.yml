@@ -28,6 +28,8 @@ jobs:
         run: |
           mkdir public
           cp index.html public/index.html
+          cp testcontract.pdf public/testcontract.pdf
+          cp -r demo_video public/demo_video
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

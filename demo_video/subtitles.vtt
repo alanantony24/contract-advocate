@@ -1,0 +1,144 @@
+1
+00:00:00,100 --> 00:00:01,470
+You did the work!
+
+2
+00:00:01,420 --> 00:00:03,150
+You delivered the project!
+
+3
+00:00:03,150 --> 00:00:09,208
+Now comes the absolute hardest part: trying to get paid without the guesswork or awkward chasing!
+
+4
+00:00:09,208 --> 00:00:17,297
+You are juggling deadlines across scattered notes, endless calendars, and multiple clients, hoping nothing slips through the cracks.
+
+5
+00:00:17,297 --> 00:00:20,879
+And when invoices go overdue, it is pure frustration!
+
+6
+00:00:20,879 --> 00:00:27,838
+Freelancers lose countless billable hours stressing over complex terms and drafting uncomfortable payment nudges.
+
+7
+00:00:27,838 --> 00:00:32,189
+Nobody went freelance to spend their weekends chasing unpaid invoices!
+
+8
+00:00:32,189 --> 00:00:43,619
+Today, millions of independent professionals struggle with three critical bottlenecks: First, complex and opaque contracts filled with dense legal jargon that conceal risky clauses.
+
+9
+00:00:43,619 --> 00:00:48,739
+Second, manual and fragmented tracking across spreadsheets and sticky notes.
+
+10
+00:00:48,739 --> 00:00:54,172
+And third, awkward payment follow-ups that create friction and delay vital cash flow.
+
+11
+00:00:54,172 --> 00:00:57,814
+Meet Contract Advocate—your AI financial co-pilot!
+
+12
+00:00:57,814 --> 00:01:02,309
+Contract Advocate turns complex agreements into predictable cash flow.
+
+13
+00:01:02,309 --> 00:01:17,694
+Our intelligent platform combines an automated Contract Checker to uncover risky terms, a unified Payment Checker dashboard, compliance-ready automatic reminders, and an AI Follow-up Assistant ready to act the moment an invoice needs attention!
+
+14
+00:01:17,694 --> 00:01:23,499
+Our workflow is simple and four-fold: Upload, Extract, Organise, and Act!
+
+15
+00:01:23,499 --> 00:01:27,694
+A freelancer simply uploads any contract or invoice PDF.
+
+16
+00:01:27,694 --> 00:01:41,239
+Our autonomous agent reads the document, extracts key amounts, due dates, milestones, and late terms, organises everything on one real-time dashboard, and prepares automated, professional client follow-ups!
+
+17
+00:01:41,239 --> 00:01:46,588
+Now, let's see Contract Advocate live in action with a freelance website design agreement!
+
+18
+00:01:46,588 --> 00:01:53,150
+We drop our PDF into the web app, and in seconds, Amazon Bedrock analyzes the entire contract.
+
+19
+00:01:53,150 --> 00:02:09,653
+Notice how it instantly flags critical terms in plain English—highlighting that the deposit is only one-third of the total project fee, identifying subjective design revision clauses that risk scope creep, and verifying intellectual property retention until full payment.
+
+20
+00:02:09,653 --> 00:02:15,879
+Below, the Payment Checker has automatically organized every date-bound obligation into structured data.
+
+21
+00:02:15,879 --> 00:02:20,278
+With one click, we confirm the terms and launch autonomous tracking!
+
+22
+00:02:20,278 --> 00:02:23,175
+Now, watch what happens when time advances.
+
+23
+00:02:23,175 --> 00:02:34,352
+When the payment deadline passes, Contract Advocate detects it immediately, updating the status and drafting a polite, professional reminder ready to send over WhatsApp or email.
+
+24
+00:02:34,352 --> 00:02:43,643
+When simulated further, the system escalates respectfully—generating a firm formal notice citing contractual payment terms and tribunal remedies.
+
+25
+00:02:43,643 --> 00:02:53,367
+Best of all, our Event Timeline maintains an immutable audit trail of every milestone and status transition—giving the freelancer complete peace of mind!
+
+26
+00:02:53,367 --> 00:02:58,884
+Under the hood, Contract Advocate uses a serverless, event-driven AWS architecture!
+
+27
+00:02:58,884 --> 00:03:06,949
+PDFs stored in Amazon S3 are parsed via Python AWS Lambda functions and analysed using Claude on Amazon Bedrock.
+
+28
+00:03:06,949 --> 00:03:19,893
+Case data persists in Amazon DynamoDB, while Amazon EventBridge Scheduler runs daily obligation checks to automate stage escalations and generate timely notifications via SNS and SES.
+
+29
+00:03:19,893 --> 00:03:25,650
+Modernizing legal workflows with enterprise-grade efficiency at less than a penny per contract!
+
+30
+00:03:25,650 --> 00:03:42,213
+Our roadmap is designed for rapid scalability: launching in Q1 with tiered SaaS packages for individual freelancers, expanding in Q2 to introduce pay-per-use and bundled digital notarization, and progressing in Q3 toward full B2B team solutions!
+
+31
+00:03:42,213 --> 00:03:46,720
+Contract Advocate replaces manual tracking with automated precision.
+
+32
+00:03:46,720 --> 00:03:48,439
+Zero missed payments.
+
+33
+00:03:48,439 --> 00:03:49,917
+Zero guesswork.
+
+34
+00:03:49,917 --> 00:03:54,689
+Turning contracts into predictable cash flow with an AI financial co-pilot!
+
+35
+00:03:54,689 --> 00:03:58,175
+Join us in simplifying the future of freelance work.
+
+36
+00:03:58,175 --> 00:04:00,398
+Bring Contract Advocate to life!
+

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contract Advocate — Official Hackathon Demo Video Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #f55414;
+      --primary-hover: #dc4508;
+      --bg: #0b0f19;
+      --card-bg: #131a29;
+      --card-border: #1e293b;
+      --line: #243049;
+      --accent-green: #10b981;
+      --accent-gold: #f59e0b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: #e2e8f0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: rgba(19, 26, 41, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #f55414, #ff7a45);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .runtime-pill {
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent-green);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .runtime-pill::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent-green);
+    }
+
+    main {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 24px 60px;
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 28px;
+    }
+
+    .panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .panel-header {
+      padding: 18px 24px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .video-container {
+      padding: 20px;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 10px;
+      outline: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      background: #000;
+    }
+
+    .downloads-bar {
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.02);
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary { background: var(--primary); color: #ffffff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary { background: #1e293b; border-color: #334155; color: #e2e8f0; }
+    .btn-secondary:hover { background: #273549; }
+
+    /* Teleprompter / Storyboard list */
+    .storyboard-list {
+      padding: 20px 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 800px;
+    }
+
+    .step-card {
+      background: #0d1320;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .step-card.demo-card {
+      border-color: var(--primary);
+      background: rgba(245, 84, 20, 0.05);
+    }
+
+    .step-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .step-badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent-gold);
+    }
+
+    .step-card.demo-card .step-badge {
+      color: var(--primary);
+    }
+
+    .step-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .step-text {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 1024px) {
+      main { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span style="color: var(--primary); font-size: 22px;">▱</span>
+      <span>Contract Advocate</span>
+      <span class="brand-badge">Official Hackathon Demo Video</span>
+    </div>
+    <div class="runtime-pill">
+      Runtime: 04:01.2 &bull; &lt; 5:00 Strict Rule Compliant
+    </div>
+  </header>
+
+  <main>
+    <!-- LEFT: Video Player -->
+    <section class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span>🎬</span> Official Demo Video (New Deck + Enthusiastic Voiceover + Live App Demo)
+        </div>
+        <span style="font-size: 12px; color: #94a3b8;">1080p HD &bull; Clean Video &bull; No Timestamps</span>
+      </div>
+
+      <div class="video-container">
+        <video controls preload="metadata">
+          <source src="contract_advocate_demo.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <p style="font-size: 12px; color: #94a3b8; text-align: center;">
+          Clean 1080p demo video featuring an energetic and engaging AI voice, fun new slides, real testcontract.pdf extraction, and no timestamps.
+        </p>
+      </div>
+
+      <div class="downloads-bar">
+        <span style="font-size: 12px; color: #94a3b8;">Direct Downloads:</span>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <a href="contract_advocate_demo.mp4" download class="btn btn-primary">⬇ Download Demo Video (.MP4)</a>
+          <a href="demo_voiceover_full.mp3" download class="btn btn-secondary">⬇ Audio (.MP3)</a>
+          <a href="subtitles.srt" download class="btn btn-secondary">⬇ Subtitles (.SRT)</a>
+          <a href="../index.html" target="_blank" class="btn btn-secondary">🚀 Open App</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Script & Problem-Solution Walkthrough -->
+    <section class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span>📜</span> Synchronized Script &amp; Structure Teleprompter
+        </div>
+        <span style="font-size: 12px; color: #94a3b8;">9 Timed Segments &bull; &lt; 5 Min</span>
+      </div>
+
+      <div class="storyboard-list">
+        <!-- 1 -->
+        <div class="step-card">
+          <div class="step-top">
+            <span class="step-badge">Slide 1 &bull; Opening Hook</span>
+          </div>
+          <div class="step-title">Juggling Deadlines &amp; Deliverables</div>
+          <p class="step-text">
+            "You did the work! You delivered the project! Now comes the absolute hardest part: trying to get paid without the guesswork or awkward chasing! You are juggling deadlines across scattered notes, endless calendars, and multiple clients, hoping nothing slips through the cracks."
+          </p>
+        </div>
+
+        <!-- 2 -->
+        <div class="step-card">
+          <div class="step-top">
+            <span class="step-badge">Slide 2 &bull; Problem Frustration</span>
+          </div>
+          <div class="step-title">The Anxiety of Overdue Invoices</div>
+          <p class="step-text">
+            "And when invoices go overdue, it is pure frustration! Freelancers lose countless billable hours stressing over complex terms and drafting uncomfortable payment nudges. Nobody went freelance to spend their weekends chasing unpaid invoices!"
+          </p>
+        </div>
+
+        <!-- 3 -->
+        <div class="step-card">
+          <div class="step-top">
+            <span class="step-badge">Slide 3 &bull; Problem Statement</span>
+          </div>
+          <div class="step-title">The 3 Critical Bottlenecks</div>
+          <p class="step-text">
+            "Today, millions of independent professionals struggle with three critical bottlenecks: First, complex and opaque contracts filled with dense legal jargon that conceal risky clauses. Second, manual and fragmented tracking across spreadsheets and sticky notes. And third, awkward payment follow-ups that create friction and delay vital cash flow."
+          </p>
+        </div>
+
+        <!-- 4 -->
+        <div class="step-card">
+          <div class="step-top">
+            <span class="step-badge">Slide 4 &bull; Solution Overview</span>
+          </div>
+          <div class="step-title">Your AI Financial Co-Pilot</div>
+          <p class="step-text">
+            "Meet Contract Advocate—your AI financial co-pilot! Contract Advocate turns complex agreements into predictable cash flow. Our intelligent platform combines an automated Contract Checker to uncover risky terms, a unified Payment Checker dashboard, compliance-ready automatic reminders, and an AI Follow-up Assistant ready to act the moment an invoice needs attention!"
+          </p>
+        </div>
+
+        <!-- 5 -->
+        <div class="step-card">
+          <div class="step-top">
+            <span class="step-badge">Slide 5 &bull; Methodology</span>
+          </div>
+          <div class="step-title">Upload &rarr; Extract &rarr; Organise &rarr; Act</div>
+          <p class="step-text">
+            "Our workflow is simple and four-fold: Upload, Extract, Organise, and Act! A freelancer simply uploads any contract or invoice PDF. Our autonomous agent reads the document, extracts key amounts, due dates, milestones, and late terms, organises everything on one real-time dashboard, and prepares automated, professional client follow-ups!"
+          </p>
+        </div>
+
+        <!-- 6 -->
+        <div class="step-card demo-card">
+          <div class="step-top">
+            <span class="step-badge">Live Screen Recording &bull; Centerpiece Demo</span>
+          </div>
+          <div class="step-title">The App in Action (Real Contract &amp; AWS Bedrock)</div>
+          <p class="step-text">
+            "Now, let's see Contract Advocate live in action with a freelance website design agreement! We drop our PDF into the web app, and in seconds, Amazon Bedrock analyzes the entire contract. Notice how it instantly flags critical terms in plain English—highlighting that the deposit is only one-third of the total project fee, identifying subjective design revision clauses that risk scope creep, and verifying intellectual property retention until full payment. Below, the Payment Checker has automatically organized every date-bound obligation into structured data. With one click, we confirm the terms and launch autonomous tracking! Now, watch what happens when time advances. When the payment deadline passes, Contract Advocate detects it immediately, updating the status and drafting a polite, professional reminder ready to send over WhatsApp or email. When simulated further, the system escalates respectfully—generating a firm formal notice citing contractual payment terms and tribunal remedies. Best of all, our Event Timeline maintains an immutable audit trail of every milestone and status transition—giving the freelancer complete peace of mind!"
+          </p>
+        </div>
+
+        <!-- 7 -->
+        <div class="step-card">
+          <div class="step-top">
+            <span class="step-badge">Slide 6 &bull; Architecture &amp; Advantage</span>
+          </div>
+          <div class="step-title">Serverless AWS Cloud Engine</div>
+          <p class="step-text">
+            "Under the hood, Contract Advocate uses a serverless, event-driven AWS architecture! PDFs stored in Amazon S3 are parsed via Python AWS Lambda functions and analysed using Claude on Amazon Bedrock. Case data persists in Amazon DynamoDB, while Amazon EventBridge Scheduler runs daily obligation checks to automate stage escalations and generate timely notifications via SNS and SES. Modernizing legal workflows with enterprise-grade efficiency at less than a penny per contract!"
+          </p>
+        </div>
+
+        <!-- 8 -->
+        <div class="step-card">
+          <div class="step-top">
+            <span class="step-badge">Slide 7 &bull; Roadmap</span>
+          </div>
+          <div class="step-title">SaaS Tier Packages &amp; Scaling</div>
+          <p class="step-text">
+            "Our roadmap is designed for rapid scalability: launching in Q1 with tiered SaaS packages for individual freelancers, expanding in Q2 to introduce pay-per-use and bundled digital notarization, and progressing in Q3 toward full B2B team solutions!"
+          </p>
+        </div>
+
+        <!-- 9 -->
+        <div class="step-card">
+          <div class="step-top">
+            <span class="step-badge">Slide 8 &bull; Conclusion</span>
+          </div>
+          <div class="step-title">Vision &amp; Call to Action</div>
+          <p class="step-text">
+            "Contract Advocate replaces manual tracking with automated precision. Zero missed payments. Zero guesswork. Turning contracts into predictable cash flow with an AI financial co-pilot! Join us in simplifying the future of freelance work. Bring Contract Advocate to life!"
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
